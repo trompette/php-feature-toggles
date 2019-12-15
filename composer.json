@@ -1,0 +1,30 @@
+{
+    "name": "trompette/feature-toggles",
+    "description": "Feature toggle infrastructure enabling continuous deployment",
+    "keywords": ["feature", "toggle", "flag", "continuous", "deployment"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benoît Merlet",
+            "email": "benoit.merlet@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Trompette\\FeatureToggles\\": "sources/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Trompette\\FeatureToggles\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "beberlei/assert": "^3.2",
+        "symfony/expression-language": "^3.4 || ^4.3 || ^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
+}
