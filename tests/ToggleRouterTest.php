@@ -3,11 +3,18 @@
 namespace Test\Trompette\FeatureToggles;
 
 use Assert\InvalidArgumentException;
+use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;
+use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
+use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
+use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 use Trompette\FeatureToggles\FeatureDefinition;
 use Trompette\FeatureToggles\FeatureRegistry;
+use Trompette\FeatureToggles\OnOffStrategy\OnOff;
+use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 use Trompette\FeatureToggles\ToggleRouter;
 use Trompette\FeatureToggles\TogglingStrategy;
+use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 class ToggleRouterTest extends TestCase
 {
@@ -74,6 +81,34 @@ class ToggleRouterTest extends TestCase
         $router->configureFeature('feature', 'dummy', 'absent');
     }
 
+    public function testStrategiesCanBeCombinedWithBooleanOperators()
+    {
+        $router = $this->configureToggleRouter(
+            new FeatureDefinition('feature', 'awesome feature', 'onoff or whitelist or percentage'),
+            $this->configureAllStrategies()
+        );
+
+        $this->assertFalse($router->hasFeature('target', 'feature'));
+
+        $router->configureFeature('feature', 'onoff', 'on');
+
+        $this->assertTrue($router->hasFeature('target', 'feature'));
+
+        $router->configureFeature('feature', 'onoff', 'off');
+        $router->configureFeature('feature', 'whitelist', 'allow', 'target');
+
+        $this->assertTrue($router->hasFeature('target', 'feature'));
+
+        $router->configureFeature('feature', 'whitelist', 'disallow', 'target');
+        $router->configureFeature('feature', 'percentage', 'slide', 56);
+
+        $this->assertFalse($router->hasFeature('target', 'feature'));
+
+        $router->configureFeature('feature', 'percentage', 'slide', 58);
+
+        $this->assertTrue($router->hasFeature('target', 'feature'));
+    }
+
     private function configureToggleRouter(FeatureDefinition $definition = null, array $strategies = []): ToggleRouter
     {
         $registry = new FeatureRegistry();
@@ -83,6 +118,24 @@ class ToggleRouterTest extends TestCase
         }
 
         return new ToggleRouter($registry, $strategies);
+    }
+
+    private function configureAllStrategies(): array
+    {
+        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+
+        $onOffConfigurationRepository = new OnOffStrategyConfigurationRepository($DBALConnection);
+        $onOffConfigurationRepository->migrateSchema();
+        $whitelistConfigurationRepository = new WhitelistStrategyConfigurationRepository($DBALConnection);
+        $whitelistConfigurationRepository->migrateSchema();
+        $percentageConfigurationRepository = new PercentageStrategyConfigurationRepository($DBALConnection);
+        $percentageConfigurationRepository->migrateSchema();
+
+        return [
+            'onoff' => new OnOff($onOffConfigurationRepository),
+            'whitelist' => new Whitelist($whitelistConfigurationRepository),
+            'percentage' => new Percentage($percentageConfigurationRepository),
+        ];
     }
 }
 

@@ -21,10 +21,13 @@
     },
     "require": {
         "php": "^7.2",
+        "ext-pdo": "*",
         "beberlei/assert": "^3.2",
+        "doctrine/dbal": "^2.10",
         "symfony/expression-language": "^3.4 || ^4.3 || ^5.0"
     },
     "require-dev": {
+        "ext-sqlite3": "*",
         "phpunit/phpunit": "^8.5"
     }
 }
