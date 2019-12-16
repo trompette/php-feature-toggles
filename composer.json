@@ -24,6 +24,7 @@
         "ext-pdo": "*",
         "beberlei/assert": "^3.2",
         "doctrine/dbal": "^2.10",
+        "symfony/console": "^3.4 || ^4.3 || ^5.0",
         "symfony/expression-language": "^3.4 || ^4.3 || ^5.0"
     },
     "require-dev": {
