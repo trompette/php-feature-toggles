@@ -17,7 +17,7 @@ bring a lot of confidence to a team.
 But it also brings more work, as the team needs to:
 - keep the code implementing the current version,
 - add the code implementing the new version,
-- and consistenly enable the new version for some users.
+- and consistently enable the new version for some users.
 
 With `trompette/feature-toggles` library, enabling the new version is done by
 asking the [toggle router](sources/ToggleRouter.php) if the current user has a
