@@ -8,6 +8,13 @@ use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 
 class PercentageTest extends TestCase
 {
+    public function testConfigurationCanBeRetrieved()
+    {
+        $percentage = $this->configurePercentage('feature', 25);
+
+        $this->assertSame(['percentage' => 25], $percentage->getConfiguration('feature'));
+    }
+
     public function testTargetDoesNotHaveFeatureWhenPercentageIs0()
     {
         $percentage = $this->configurePercentage('feature', 0);

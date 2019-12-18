@@ -14,6 +14,11 @@ class OnOff implements TogglingStrategy
         $this->configurationRepository = $configurationRepository;
     }
 
+    public function getConfiguration(string $feature): array
+    {
+        return ['enabled' => $this->configurationRepository->isEnabled($feature)];
+    }
+
     public function decideIfTargetHasFeature(string $target, string $feature): bool
     {
         return $this->configurationRepository->isEnabled($feature);

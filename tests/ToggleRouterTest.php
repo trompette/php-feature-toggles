@@ -146,6 +146,11 @@ class DummyStrategy implements TogglingStrategy
         return true;
     }
 
+    public function getConfiguration(string $feature): array
+    {
+        return ['key' => 'value'];
+    }
+
     public function configure(string $value, string $feature): void
     {
         throw new \Exception(__METHOD__."('$value', '$feature') not implemented");
