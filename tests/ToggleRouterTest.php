@@ -46,6 +46,13 @@ class ToggleRouterTest extends TestCase
         $this->assertFalse($router->hasFeature('target', 'feature'));
     }
 
+    public function testFeatureConfigurationCanBeRetrievedByStrategy()
+    {
+        $router = $this->configureToggleRouter(null, ['dummy' => new DummyStrategy()]);
+
+        $this->assertSame(['dummy' => ['key' => 'value']], $router->getFeatureConfiguration('feature'));
+    }
+
     public function testUnregisteredFeatureCanBeConfiguredByStrategy()
     {
         $this->expectExceptionMessage("configure('value', 'feature') not implemented");
