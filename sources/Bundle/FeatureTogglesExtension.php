@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Trompette\FeatureToggles\Console\ConfigureFeatureCommand;
 use Trompette\FeatureToggles\Console\MigrateDBALSchemaCommand;
+use Trompette\FeatureToggles\Console\ShowFeatureConfigurationCommand;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
@@ -89,6 +90,13 @@ class FeatureTogglesExtension extends Extension
             ->addArgument(new Reference(OnOffStrategyConfigurationRepository::class))
             ->addArgument(new Reference(WhitelistStrategyConfigurationRepository::class))
             ->addArgument(new Reference(PercentageStrategyConfigurationRepository::class))
+            ->addTag('console.command')
+        ;
+
+        $container
+            ->register(ShowFeatureConfigurationCommand::class, ShowFeatureConfigurationCommand::class)
+            ->addArgument(new Reference(FeatureRegistry::class))
+            ->addArgument(new Reference(ToggleRouter::class))
             ->addTag('console.command')
         ;
 
