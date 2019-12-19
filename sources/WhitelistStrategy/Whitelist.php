@@ -14,6 +14,11 @@ class Whitelist implements TogglingStrategy
         $this->configurationRepository = $configurationRepository;
     }
 
+    public function getConfiguration(string $feature): array
+    {
+        return ['whitelistedTargets' => $this->configurationRepository->getWhitelistedTargets($feature)];
+    }
+
     public function decideIfTargetHasFeature(string $target, string $feature): bool
     {
         $whitelistedTargets = $this->configurationRepository->getWhitelistedTargets($feature);

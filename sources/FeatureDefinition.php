@@ -25,6 +25,11 @@ class FeatureDefinition
         return $this->name;
     }
 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
     public function getStrategy(): string
     {
         return $this->strategy;

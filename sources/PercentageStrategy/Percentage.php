@@ -14,6 +14,11 @@ class Percentage implements TogglingStrategy
         $this->configurationRepository = $configurationRepository;
     }
 
+    public function getConfiguration(string $feature): array
+    {
+        return ['percentage' => $this->configurationRepository->getPercentage($feature)];
+    }
+
     public function decideIfTargetHasFeature(string $target, string $feature): bool
     {
         $percentage = $this->configurationRepository->getPercentage($feature);

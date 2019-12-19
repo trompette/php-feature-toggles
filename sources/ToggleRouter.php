@@ -43,6 +43,16 @@ class ToggleRouter
         }
     }
 
+    public function getFeatureConfiguration(string $feature): array
+    {
+        return array_map(
+            function (TogglingStrategy $strategy) use ($feature) {
+                return $strategy->getConfiguration($feature);
+            },
+            $this->strategies
+        );
+    }
+
     public function configureFeature(string $feature, string $strategy, string $method, $parameters = []): void
     {
         Assert::that($this->strategies)->keyExists($strategy, "$strategy is an invalid strategy");

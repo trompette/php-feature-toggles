@@ -156,8 +156,9 @@ There are also useful console commands defined as services and tagged with
 
 ```
  feature-toggles
-  feature-toggles:configure-feature    Configures a feature
-  feature-toggles:migrate-dbal-schema  Migrates DBAL schema
+  feature-toggles:configure-feature           Configures a feature
+  feature-toggles:migrate-dbal-schema         Migrates DBAL schema
+  feature-toggles:show-feature-configuration  Shows a feature configuration
 ```
 
 For technical details, see

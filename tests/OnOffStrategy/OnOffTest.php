@@ -8,21 +8,28 @@ use Trompette\FeatureToggles\OnOffStrategy\OnOff;
 
 class OnOffTest extends TestCase
 {
+    public function testConfigurationCanBeRetrieved()
+    {
+        $onOff = $this->configureOnOff('feature', true);
+
+        $this->assertSame(['enabled' => true], $onOff->getConfiguration('feature'));
+    }
+
     public function testTargetDoesNotHaveFeatureWhenNotEnabled()
     {
-        $onOff = $this->configureEnabled('feature', false);
+        $onOff = $this->configureOnOff('feature', false);
 
         $this->assertFalse($onOff->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testTargetHasFeatureWhenEnabled()
     {
-        $onOff = $this->configureEnabled('feature', 100);
+        $onOff = $this->configureOnOff('feature', true);
 
         $this->assertTrue($onOff->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    private function configureEnabled(string $feature, bool $enabled): OnOff
+    private function configureOnOff(string $feature, bool $enabled): OnOff
     {
         $configurationRepository = $this->prophesize(ConfigurationRepository::class);
         $configurationRepository->isEnabled($feature)->willReturn($enabled);

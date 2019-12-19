@@ -8,6 +8,13 @@ use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 class WhitelistTest extends TestCase
 {
+    public function testConfigurationCanBeRetrieved()
+    {
+        $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
+
+        $this->assertSame(['whitelistedTargets' => ['whitelisted']], $whitelist->getConfiguration('feature'));
+    }
+
     public function testTargetDoesNotHaveFeatureWhenWhitelistIsEmpty()
     {
         $whitelist = $this->configureWhitelist('feature', []);
