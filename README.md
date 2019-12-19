@@ -1,3 +1,7 @@
+[![License](https://poser.pugx.org/trompette/feature-toggles/license)](LICENSE)
+[![Stable Version](https://poser.pugx.org/trompette/feature-toggles/v/stable)](https://packagist.org/packages/trompette/feature-toggles)
+[![Build Status](https://travis-ci.com/trompette/php-feature-toggles.svg?branch=master)](https://travis-ci.com/trompette/php-feature-toggles)
+
 # trompette/feature-toggles
 
 This PHP library implements a feature toggle infrastructure.
