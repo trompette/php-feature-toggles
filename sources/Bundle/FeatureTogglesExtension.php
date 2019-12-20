@@ -71,7 +71,7 @@ class FeatureTogglesExtension extends Extension
 
     private function defineToggleRouter(ContainerBuilder $container)
     {
-        $container
+        $definition = $container
             ->register(ToggleRouter::class, ToggleRouter::class)
             ->setPublic(true)
             ->addArgument(new Reference(FeatureRegistry::class))
@@ -81,6 +81,13 @@ class FeatureTogglesExtension extends Extension
                 'percentage' => new Reference(Percentage::class),
             ])
         ;
+
+        if ($container->has('logger')) {
+            $definition
+                ->addMethodCall('setLogger', [new Reference('logger')])
+                ->addTag('monolog.logger', ['channel' => 'feature_toggles'])
+            ;
+        }
     }
 
     private function defineConsoleCommands(ContainerBuilder $container)
