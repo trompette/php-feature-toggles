@@ -5,6 +5,7 @@ namespace Test\Trompette\FeatureToggles;
 use Assert\InvalidArgumentException;
 use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\Test\TestLogger;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
@@ -21,8 +22,10 @@ class ToggleRouterTest extends TestCase
     public function testTargetDoesNotHaveUnregisteredFeature()
     {
         $router = $this->configureToggleRouter();
+        $router->setLogger($logger = new TestLogger());
 
         $this->assertFalse($router->hasFeature('target', 'feature'));
+        $this->assertTrue($logger->hasWarning('Feature is unregistered'));
     }
 
     public function testTargetHasRegisteredFeatureWithValidStrategy()
@@ -42,34 +45,47 @@ class ToggleRouterTest extends TestCase
     public function testTargetDoesNotHaveRegisteredFeatureWithInvalidStrategy()
     {
         $router = $this->configureToggleRouter(new FeatureDefinition('feature', 'awesome feature', 'invalid'));
+        $router->setLogger($logger = new TestLogger());
 
         $this->assertFalse($router->hasFeature('target', 'feature'));
+        $this->assertTrue($logger->hasWarning('Feature strategy is invalid'));
     }
 
     public function testFeatureConfigurationCanBeRetrievedByStrategy()
     {
-        $router = $this->configureToggleRouter(null, ['dummy' => new DummyStrategy()]);
+        $strategy = $this->prophesize(FakeStrategy::class);
+        $strategy->getConfiguration('feature')->willReturn(['key' => 'value']);
 
-        $this->assertSame(['dummy' => ['key' => 'value']], $router->getFeatureConfiguration('feature'));
+        $router = $this->configureToggleRouter(null, ['fake' => $strategy->reveal()]);
+
+        $this->assertSame(['fake' => ['key' => 'value']], $router->getFeatureConfiguration('feature'));
     }
 
     public function testUnregisteredFeatureCanBeConfiguredByStrategy()
     {
-        $this->expectExceptionMessage("configure('value', 'feature') not implemented");
+        $strategy = $this->prophesize(FakeStrategy::class);
+        $strategy->configure('value', 'feature')->shouldBeCalled();
 
-        $router = $this->configureToggleRouter(null, ['dummy' => new DummyStrategy()]);
-        $router->configureFeature('feature', 'dummy', 'configure', 'value');
+        $router = $this->configureToggleRouter(null, ['fake' => $strategy->reveal()]);
+        $router->setLogger($logger = new TestLogger());
+        $router->configureFeature('feature', 'fake', 'configure', 'value');
+
+        $this->assertTrue($logger->hasInfo('Feature has been configured'));
     }
 
     public function testRegisteredFeatureCanBeConfiguredByStrategy()
     {
-        $this->expectExceptionMessage("configure('value', 'feature') not implemented");
+        $strategy = $this->prophesize(FakeStrategy::class);
+        $strategy->configure('value', 'feature')->shouldBeCalled();
 
         $router = $this->configureToggleRouter(
             new FeatureDefinition('feature', 'awesome feature', 'true'),
-            ['dummy' => new DummyStrategy()]
+            ['fake' => $strategy->reveal()]
         );
-        $router->configureFeature('feature', 'dummy', 'configure', 'value');
+        $router->setLogger($logger = new TestLogger());
+        $router->configureFeature('feature', 'fake', 'configure', 'value');
+
+        $this->assertTrue($logger->hasInfo('Feature has been configured'));
     }
 
     public function testFeatureCannotBeConfiguredWhenStrategyDoesNotExist()
@@ -84,8 +100,10 @@ class ToggleRouterTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $router = $this->configureToggleRouter(null, ['dummy' => new DummyStrategy()]);
-        $router->configureFeature('feature', 'dummy', 'absent');
+        $strategy = $this->prophesize(FakeStrategy::class);
+
+        $router = $this->configureToggleRouter(null, ['fake' => $strategy->reveal()]);
+        $router->configureFeature('feature', 'fake', 'absent');
     }
 
     public function testStrategiesCanBeCombinedWithBooleanOperators()
@@ -146,20 +164,7 @@ class ToggleRouterTest extends TestCase
     }
 }
 
-class DummyStrategy implements TogglingStrategy
+interface FakeStrategy extends TogglingStrategy
 {
-    public function decideIfTargetHasFeature(string $target, string $feature): bool
-    {
-        return true;
-    }
-
-    public function getConfiguration(string $feature): array
-    {
-        return ['key' => 'value'];
-    }
-
-    public function configure(string $value, string $feature): void
-    {
-        throw new \Exception(__METHOD__."('$value', '$feature') not implemented");
-    }
+    public function configure(string $value, string $feature): void;
 }

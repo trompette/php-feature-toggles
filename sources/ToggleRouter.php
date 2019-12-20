@@ -3,11 +3,16 @@
 namespace Trompette\FeatureToggles;
 
 use Assert\Assert;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
-class ToggleRouter
+class ToggleRouter implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var FeatureRegistry */
     private $registry;
 
@@ -20,11 +25,18 @@ class ToggleRouter
 
         $this->registry = $registry;
         $this->strategies = $strategies;
+
+        $this->setLogger(new NullLogger());
     }
 
     public function hasFeature(string $target, string $feature): bool
     {
         if (!$this->registry->exists($feature)) {
+            $this->logger->warning('Feature is unregistered', [
+                'target' => $target,
+                'feature' => $feature,
+            ]);
+
             return false;
         }
 
@@ -38,7 +50,15 @@ class ToggleRouter
 
         try {
             return (bool) (new ExpressionLanguage())->evaluate($expression, $values);
-        } catch (SyntaxError $e) {
+        } catch (SyntaxError $error) {
+            $this->logger->warning('Feature strategy is invalid', [
+                'target' => $target,
+                'feature' => $feature,
+                'expression' => $expression,
+                'values' => $values,
+                'error' => $error->getMessage(),
+            ]);
+
             return false;
         }
     }
@@ -62,6 +82,15 @@ class ToggleRouter
             $parameters = [$parameters];
         }
 
-        $this->strategies[$strategy]->$method(...array_merge($parameters, [$feature]));
+        $parameters = array_merge($parameters, [$feature]);
+
+        $this->strategies[$strategy]->$method(...$parameters);
+
+        $this->logger->info('Feature has been configured', [
+            'feature' => $feature,
+            'strategy' => $strategy,
+            'method' => $method,
+            'parameters' => $parameters,
+        ]);
     }
 }
