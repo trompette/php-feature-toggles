@@ -17,6 +17,7 @@ env:
     - SYMFONY_VERSION="4.3.*"
     - SYMFONY_VERSION="4.4.*"
     - SYMFONY_VERSION="5.0.*"
+    - SYMFONY_VERSION="5.1.*"
 
 before_install:
     - phpenv config-rm xdebug.ini || echo "xdebug not available"
