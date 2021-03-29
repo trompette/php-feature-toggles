@@ -3,6 +3,7 @@
 namespace Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
@@ -33,15 +34,28 @@ class OnOffStrategyConfigurationRepository implements ConfigurationRepository, S
             function (Connection $connection) use ($enabled, $feature) {
                 $rowCount = $connection->update(
                     'feature_toggles_onoff',
-                    ['enabled' => $enabled],
-                    ['feature' => $feature]
+                    [
+                        'enabled' => $enabled,
+                    ],
+                    [
+                        'feature' => $feature,
+                    ],
+                    [
+                        'enabled' => ParameterType::BOOLEAN,
+                    ]
                 );
 
                 if (0 === $rowCount) {
-                    $connection->insert('feature_toggles_onoff', [
-                        'feature' => $feature,
-                        'enabled' => $enabled,
-                    ]);
+                    $connection->insert(
+                        'feature_toggles_onoff',
+                        [
+                            'feature' => $feature,
+                            'enabled' => $enabled,
+                        ],
+                        [
+                            'enabled' => ParameterType::BOOLEAN,
+                        ]
+                    );
                 }
             }
         );
