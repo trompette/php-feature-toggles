@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\PercentageStrategy;
 
+use Assert\Assert;
 use Trompette\FeatureToggles\TogglingStrategy;
 
 class Percentage implements TogglingStrategy
@@ -36,6 +37,8 @@ class Percentage implements TogglingStrategy
 
     public function slide(int $percentage, string $feature): void
     {
+        Assert::that($percentage)->range(0, 100);
+
         $this->configurationRepository->setPercentage($percentage, $feature);
     }
 

@@ -2,6 +2,7 @@
 
 namespace Test\Trompette\FeatureToggles\PercentageStrategy;
 
+use Assert\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\PercentageStrategy\ConfigurationRepository;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
@@ -41,6 +42,22 @@ class PercentageTest extends TestCase
         $percentage = $this->configurePercentage('feature', 56);
 
         $this->assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
+    }
+
+    public function testThatPercentageCannotBeNegative()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $percentage = $this->configurePercentage('feature', 0);
+        $percentage->slide(-1, 'feature');
+    }
+
+    public function testThatPercentageCannotBeHigherThan100()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $percentage = $this->configurePercentage('feature', 0);
+        $percentage->slide(101, 'feature');
     }
 
     private function configurePercentage(string $feature, int $percentage): Percentage
