@@ -1,6 +1,6 @@
 [![License](https://poser.pugx.org/trompette/feature-toggles/license)](LICENSE)
 [![Stable Version](https://poser.pugx.org/trompette/feature-toggles/v/stable)](https://packagist.org/packages/trompette/feature-toggles)
-[![Build Status](https://travis-ci.com/trompette/php-feature-toggles.svg?branch=master)](https://travis-ci.com/trompette/php-feature-toggles)
+[![Automated Tests](https://github.com/trompette/php-feature-toggles/actions/workflows/automated-tests.yml/badge.svg)](https://github.com/trompette/php-feature-toggles/actions/workflows/automated-tests.yml)
 
 # trompette/feature-toggles
 

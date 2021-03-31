@@ -1,0 +1,44 @@
+name: "Automated Tests"
+
+on:
+  push:
+    branches: 
+      - "master"
+  pull_request:
+    branches: 
+      - "master"
+
+jobs:
+  phpunit:
+    name: "PHPUnit"
+    runs-on: "ubuntu-latest"
+    
+    strategy:
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+        symfony-version:
+          - "3.4.*"
+          - "4.4.*"
+          - "5.2.*"
+
+    steps:
+    - name: "Checkout"
+      uses: "actions/checkout@v2"
+
+    - name: "Install PHP version from matrix"
+      uses: "shivammathur/setup-php@v2"
+      with:
+        php-version: "${{ matrix.php-version }}"
+
+    - name: "Validate composer.json and composer.lock"
+      run: "composer validate --strict"
+
+    - name: "Install dependencies and require Symfony version from matrix"
+      run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist symfony/symfony:${{ matrix.symfony-version }}"
+
+    - name: "Run PHPUnit"
+      run: "vendor/bin/phpunit --color --testdox tests/"
