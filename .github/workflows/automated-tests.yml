@@ -37,7 +37,7 @@ jobs:
         php-version: "${{ matrix.php-version }}"
 
     - name: "Validate composer.json and composer.lock"
-      run: "composer validate --strict"
+      run: "composer validate"
 
     - name: "Install dependencies and require Symfony version from matrix"
       run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist doctrine/dbal:${{ matrix.dbal-version }} symfony/symfony:${{ matrix.symfony-version }}"
