@@ -23,7 +23,7 @@ class WhitelistStrategyConfigurationRepository implements ConfigurationRepositor
     {
         $sql = 'select target from feature_toggles_whitelist where feature = ?';
 
-        return $this->connection->executeQuery($sql, [$feature])->fetchAll(\PDO::FETCH_COLUMN);
+        return $this->connection->executeQuery($sql, [$feature])->fetchFirstColumn();
     }
 
     public function addToWhitelist(string $target, string $feature): void
