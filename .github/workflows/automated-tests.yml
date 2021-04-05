@@ -15,8 +15,10 @@ jobs:
     
     strategy:
       matrix:
+        dbal-version:
+          - "2.12.*"
+          - "3.0.*"
         php-version:
-          - "7.2"
           - "7.3"
           - "7.4"
           - "8.0"
@@ -38,7 +40,7 @@ jobs:
       run: "composer validate --strict"
 
     - name: "Install dependencies and require Symfony version from matrix"
-      run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist symfony/symfony:${{ matrix.symfony-version }}"
+      run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist doctrine/dbal:${{ matrix.dbal-version }} symfony/symfony:${{ matrix.symfony-version }}"
 
     - name: "Run PHPUnit"
       run: "vendor/bin/phpunit --colors=always --testdox tests/"

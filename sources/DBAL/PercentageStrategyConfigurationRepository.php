@@ -23,7 +23,7 @@ class PercentageStrategyConfigurationRepository implements ConfigurationReposito
     public function getPercentage(string $feature): int
     {
         $sql = 'select percentage from feature_toggles_percentage where feature = ?';
-        $column = $this->connection->fetchColumn($sql, [$feature]);
+        $column = $this->connection->fetchOne($sql, [$feature]);
 
         return false !== $column ? $column : 0;
     }

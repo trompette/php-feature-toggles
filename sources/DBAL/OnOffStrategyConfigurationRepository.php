@@ -25,7 +25,7 @@ class OnOffStrategyConfigurationRepository implements ConfigurationRepository, S
     {
         $sql = 'select enabled from feature_toggles_onoff where feature = ?';
 
-        return (bool) $this->connection->fetchColumn($sql, [$feature]);
+        return (bool) $this->connection->fetchOne($sql, [$feature]);
     }
 
     public function setEnabled(bool $enabled, string $feature): void
