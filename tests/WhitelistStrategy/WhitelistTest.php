@@ -15,28 +15,28 @@ class WhitelistTest extends TestCase
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 
-        $this->assertSame(['whitelistedTargets' => ['whitelisted']], $whitelist->getConfiguration('feature'));
+        static::assertSame(['whitelistedTargets' => ['whitelisted']], $whitelist->getConfiguration('feature'));
     }
 
     public function testTargetDoesNotHaveFeatureWhenWhitelistIsEmpty()
     {
         $whitelist = $this->configureWhitelist('feature', []);
 
-        $this->assertFalse($whitelist->decideIfTargetHasFeature('target', 'feature'));
+        static::assertFalse($whitelist->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testTargetHasFeatureWhenWhitelisted()
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 
-        $this->assertTrue($whitelist->decideIfTargetHasFeature('whitelisted', 'feature'));
+        static::assertTrue($whitelist->decideIfTargetHasFeature('whitelisted', 'feature'));
     }
 
     public function testTargetDoesNotHaveFeatureWhenNotWhitelisted()
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 
-        $this->assertFalse($whitelist->decideIfTargetHasFeature('not whitelisted', 'feature'));
+        static::assertFalse($whitelist->decideIfTargetHasFeature('not whitelisted', 'feature'));
     }
 
     private function configureWhitelist(string $feature, array $whitelistedTargets): Whitelist

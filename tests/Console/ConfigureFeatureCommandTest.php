@@ -24,8 +24,8 @@ class ConfigureFeatureCommandTest extends TestCase
             'method' => 'm',
         ]);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('Feature f configured!', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('Feature f configured!', $commandTester->getDisplay());
     }
 
     public function testCommandCanBeExecutedWithExtraParameters()
@@ -41,7 +41,7 @@ class ConfigureFeatureCommandTest extends TestCase
             'parameters' => ['p1', 'p2'],
         ]);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('Feature f configured!', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('Feature f configured!', $commandTester->getDisplay());
     }
 }

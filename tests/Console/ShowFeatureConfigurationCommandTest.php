@@ -20,10 +20,10 @@ class ShowFeatureConfigurationCommandTest extends TestCase
         $commandTester = new CommandTester($this->configureCommand($withTarget = false));
         $commandTester->execute(['feature' => 'feature']);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('Feature', $commandTester->getDisplay());
-        $this->assertStringContainsString('Configuration', $commandTester->getDisplay());
-        $this->assertStringNotContainsString('Target', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('Feature', $commandTester->getDisplay());
+        static::assertStringContainsString('Configuration', $commandTester->getDisplay());
+        static::assertStringNotContainsString('Target', $commandTester->getDisplay());
     }
 
     public function testCommandCanBeExecutedWithAFeatureAndATarget()
@@ -31,8 +31,8 @@ class ShowFeatureConfigurationCommandTest extends TestCase
         $commandTester = new CommandTester($this->configureCommand($withTarget = true));
         $commandTester->execute(['feature' => 'feature', 'target' => 'target']);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('Target', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('Target', $commandTester->getDisplay());
     }
 
     private function configureCommand(bool $withTarget): ShowFeatureConfigurationCommand

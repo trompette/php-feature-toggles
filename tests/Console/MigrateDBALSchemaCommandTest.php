@@ -20,7 +20,7 @@ class MigrateDBALSchemaCommandTest extends TestCase
         $commandTester = new CommandTester(new MigrateDBALSchemaCommand($schemaMigrator->reveal()));
         $commandTester->execute($input = []);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('All done!', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('All done!', $commandTester->getDisplay());
     }
 }
