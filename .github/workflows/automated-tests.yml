@@ -39,7 +39,7 @@ jobs:
     - name: "Validate composer.json and composer.lock"
       run: "composer validate"
 
-    - name: "Install dependencies and require Symfony version from matrix"
+    - name: "Require Doctrine DBAL and Symfony versions from matrix"
       run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist doctrine/dbal:${{ matrix.dbal-version }} symfony/symfony:${{ matrix.symfony-version }}"
 
     - name: "Run PHPUnit"
