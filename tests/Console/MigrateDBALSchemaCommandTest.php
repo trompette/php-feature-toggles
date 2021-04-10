@@ -2,6 +2,7 @@
 
 namespace Test\Trompette\FeatureToggles\Console;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use Trompette\FeatureToggles\Console\MigrateDBALSchemaCommand;
 use PHPUnit\Framework\TestCase;
@@ -9,6 +10,8 @@ use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 
 class MigrateDBALSchemaCommandTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCommandCanBeExecuted()
     {
         $schemaMigrator = $this->prophesize(SchemaMigrator::class);
@@ -17,7 +20,7 @@ class MigrateDBALSchemaCommandTest extends TestCase
         $commandTester = new CommandTester(new MigrateDBALSchemaCommand($schemaMigrator->reveal()));
         $commandTester->execute($input = []);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
-        $this->assertStringContainsString('All done!', $commandTester->getDisplay());
+        static::assertSame(0, $commandTester->getStatusCode());
+        static::assertStringContainsString('All done!', $commandTester->getDisplay());
     }
 }

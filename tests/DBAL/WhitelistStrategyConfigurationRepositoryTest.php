@@ -13,9 +13,9 @@ class WhitelistStrategyConfigurationRepositoryTest extends TestCase
         $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
         $repository = new WhitelistStrategyConfigurationRepository($DBALConnection);
 
-        $this->assertCount(0, $DBALConnection->getSchemaManager()->listTables());
+        static::assertCount(0, $DBALConnection->getSchemaManager()->listTables());
         $repository->migrateSchema();
-        $this->assertCount(1, $DBALConnection->getSchemaManager()->listTables());
+        static::assertCount(1, $DBALConnection->getSchemaManager()->listTables());
     }
 
     public function testConfigurationIsPersisted()
@@ -24,10 +24,10 @@ class WhitelistStrategyConfigurationRepositoryTest extends TestCase
         $repository = new WhitelistStrategyConfigurationRepository($DBALConnection);
         $repository->migrateSchema();
 
-        $this->assertEmpty($repository->getWhitelistedTargets('feature'));
+        static::assertEmpty($repository->getWhitelistedTargets('feature'));
         $repository->addToWhitelist('target', 'feature');
-        $this->assertSame(['target'], $repository->getWhitelistedTargets('feature'));
+        static::assertSame(['target'], $repository->getWhitelistedTargets('feature'));
         $repository->removeFromWhitelist('target', 'feature');
-        $this->assertEmpty($repository->getWhitelistedTargets('feature'));
+        static::assertEmpty($repository->getWhitelistedTargets('feature'));
     }
 }

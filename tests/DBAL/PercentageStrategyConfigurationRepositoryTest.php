@@ -13,9 +13,9 @@ class PercentageStrategyConfigurationRepositoryTest extends TestCase
         $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
         $repository = new PercentageStrategyConfigurationRepository($DBALConnection);
 
-        $this->assertCount(0, $DBALConnection->getSchemaManager()->listTables());
+        static::assertCount(0, $DBALConnection->getSchemaManager()->listTables());
         $repository->migrateSchema();
-        $this->assertCount(1, $DBALConnection->getSchemaManager()->listTables());
+        static::assertCount(1, $DBALConnection->getSchemaManager()->listTables());
     }
 
     public function testConfigurationIsPersisted()
@@ -24,8 +24,8 @@ class PercentageStrategyConfigurationRepositoryTest extends TestCase
         $repository = new PercentageStrategyConfigurationRepository($DBALConnection);
         $repository->migrateSchema();
 
-        $this->assertSame(0, $repository->getPercentage('feature'));
+        static::assertSame(0, $repository->getPercentage('feature'));
         $repository->setPercentage(25, 'feature');
-        $this->assertSame(25, $repository->getPercentage('feature'));
+        static::assertSame(25, $repository->getPercentage('feature'));
     }
 }

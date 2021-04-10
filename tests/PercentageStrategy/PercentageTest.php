@@ -4,44 +4,47 @@ namespace Test\Trompette\FeatureToggles\PercentageStrategy;
 
 use Assert\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Trompette\FeatureToggles\PercentageStrategy\ConfigurationRepository;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 
 class PercentageTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testConfigurationCanBeRetrieved()
     {
         $percentage = $this->configurePercentage('feature', 25);
 
-        $this->assertSame(['percentage' => 25], $percentage->getConfiguration('feature'));
+        static::assertSame(['percentage' => 25], $percentage->getConfiguration('feature'));
     }
 
     public function testTargetDoesNotHaveFeatureWhenPercentageIs0()
     {
         $percentage = $this->configurePercentage('feature', 0);
 
-        $this->assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
+        static::assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testTargetHasFeatureWhenPercentageIs100()
     {
         $percentage = $this->configurePercentage('feature', 100);
 
-        $this->assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
+        static::assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testTargetHasFeatureWhenPercentageIsAboveComputedHash()
     {
         $percentage = $this->configurePercentage('feature', 58);
 
-        $this->assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
+        static::assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testTargetDoesNotHaveFeatureWhenPercentageIsBelowComputedHash()
     {
         $percentage = $this->configurePercentage('feature', 56);
 
-        $this->assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
+        static::assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
     public function testThatPercentageCannotBeNegative()

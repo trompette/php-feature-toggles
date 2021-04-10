@@ -18,7 +18,7 @@ class FeatureTogglesBundleTest extends TestCase
         $kernel = new AppKernel('test', true);
         $kernel->boot();
 
-        $this->assertTrue($kernel->getContainer()->has(ToggleRouter::class));
+        static::assertTrue($kernel->getContainer()->has(ToggleRouter::class));
     }
 }
 
