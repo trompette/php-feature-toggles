@@ -4,11 +4,14 @@ namespace Test\Trompette\FeatureToggles\PercentageStrategy;
 
 use Assert\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Trompette\FeatureToggles\PercentageStrategy\ConfigurationRepository;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 
 class PercentageTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testConfigurationCanBeRetrieved()
     {
         $percentage = $this->configurePercentage('feature', 25);

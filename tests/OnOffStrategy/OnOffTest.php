@@ -3,11 +3,14 @@
 namespace Test\Trompette\FeatureToggles\OnOffStrategy;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Trompette\FeatureToggles\OnOffStrategy\ConfigurationRepository;
 use Trompette\FeatureToggles\OnOffStrategy\OnOff;
 
 class OnOffTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testConfigurationCanBeRetrieved()
     {
         $onOff = $this->configureOnOff('feature', true);

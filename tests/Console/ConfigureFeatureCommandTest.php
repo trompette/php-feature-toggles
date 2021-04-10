@@ -2,6 +2,7 @@
 
 namespace Test\Trompette\FeatureToggles\Console;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use Trompette\FeatureToggles\Console\ConfigureFeatureCommand;
 use PHPUnit\Framework\TestCase;
@@ -9,6 +10,8 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class ConfigureFeatureCommandTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCommandCanBeExecutedWithoutExtraParameters()
     {
         $toggleRouter = $this->prophesize(ToggleRouter::class);

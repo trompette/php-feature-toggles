@@ -5,6 +5,7 @@ namespace Test\Trompette\FeatureToggles;
 use Assert\InvalidArgumentException;
 use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\Test\TestLogger;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
@@ -19,6 +20,8 @@ use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 class ToggleRouterTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testTargetDoesNotHaveUnregisteredFeature()
     {
         $router = $this->configureToggleRouter();

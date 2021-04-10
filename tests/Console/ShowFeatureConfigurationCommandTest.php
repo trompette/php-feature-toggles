@@ -2,6 +2,7 @@
 
 namespace Test\Trompette\FeatureToggles\Console;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Trompette\FeatureToggles\Console\ShowFeatureConfigurationCommand;
@@ -12,6 +13,8 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class ShowFeatureConfigurationCommandTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCommandCanBeExecutedWithAFeature()
     {
         $commandTester = new CommandTester($this->configureCommand($withTarget = false));

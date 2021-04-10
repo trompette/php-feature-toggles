@@ -3,11 +3,14 @@
 namespace Test\Trompette\FeatureToggles\WhitelistStrategy;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Trompette\FeatureToggles\WhitelistStrategy\ConfigurationRepository;
 use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 class WhitelistTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testConfigurationCanBeRetrieved()
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
