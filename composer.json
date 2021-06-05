@@ -24,16 +24,16 @@
         "beberlei/assert": ">=3.2",
         "doctrine/dbal": ">=2.12",
         "psr/log": ">=1.1",
-        "symfony/config": ">=3.4",
-        "symfony/console": ">=3.4",
-        "symfony/expression-language": ">=3.4"
+        "symfony/config": ">=4.4",
+        "symfony/console": ">=4.4",
+        "symfony/expression-language": ">=4.4"
     },
     "require-dev": {
         "ext-sqlite3": "*",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
-        "symfony/dependency-injection": ">=3.4",
-        "symfony/http-kernel": ">=3.4"
+        "symfony/dependency-injection": ">=4.4",
+        "symfony/http-kernel": ">=4.4"
     },
     "suggest": {
         "symfony/dependency-injection": "To use the provided bundle",
