@@ -186,6 +186,8 @@ There are also useful console commands defined as services and tagged with
   feature-toggles:show-feature-configuration  Shows a feature configuration
 ```
 
+More information about the commands can be found in their help messages.
+
 For technical details, see
 [`FeatureTogglesExtension`](sources/Bundle/FeatureTogglesExtension.php) class.
 
