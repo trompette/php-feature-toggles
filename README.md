@@ -139,6 +139,16 @@ $repository->migrateSchema();
 All previous code is optional when using Symfony: everything is glued together
 by the [`FeatureTogglesBundle`](sources/Bundle/FeatureTogglesBundle.php) class.
 
+Registering the [bundle](sources/Bundle/FeatureTogglesBundle.php) in
+`config/bundles.php` is needed to benefit from the Symfony integration:
+
+```php
+return [
+    // ...
+    Trompette\FeatureToggles\Bundle\FeatureTogglesBundle::class => ['all' => true],
+];
+```
+
 ### Bundle configuration
 
 The [bundle](sources/Bundle/FeatureTogglesBundle.php) can be configured as
