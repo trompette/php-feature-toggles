@@ -13,6 +13,17 @@ deployment.
 For more information on the topic, see [*Feature Toggles (aka Feature Flags)* on
 MartinFowler.com](https://martinfowler.com/articles/feature-toggles.html).
 
+## Installation
+
+The `trompette/feature-toggles` library is distributed on
+[Packagist](https://packagist.org/packages/trompette/feature-toggles).
+
+It can be added as a project dependency with the following command:
+
+```bash
+composer require trompette/feature-toggles
+```
+
 ## Standalone usage
 
 When working on a new version of a page, deploying gradually the new version can
@@ -127,6 +138,16 @@ $repository->migrateSchema();
 
 All previous code is optional when using Symfony: everything is glued together
 by the [`FeatureTogglesBundle`](sources/Bundle/FeatureTogglesBundle.php) class.
+
+Registering the [bundle](sources/Bundle/FeatureTogglesBundle.php) in
+`config/bundles.php` is needed to benefit from the Symfony integration:
+
+```php
+return [
+    // ...
+    Trompette\FeatureToggles\Bundle\FeatureTogglesBundle::class => ['all' => true],
+];
+```
 
 ### Bundle configuration
 
