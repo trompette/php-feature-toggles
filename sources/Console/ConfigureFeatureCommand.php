@@ -23,7 +23,25 @@ class ConfigureFeatureCommand extends Command
     protected function configure()
     {
         $this->setDescription('Configures a feature');
-        $this->setHelp('This command configures a feature for a strategy using the toggle router.');
+        $this->setHelp(
+<<<HELP
+The <info>%command.name%</info> command configures a feature for a strategy using the toggle router.
+
+To enable or disable <comment>feature</comment> with <comment>onoff</comment> strategy:
+
+  <info>%command.full_name% feature onoff on</info>
+  <info>%command.full_name% feature onoff off</info>
+
+To add or remove <comment>target</comment> from whitelist for <comment>feature</comment> with <comment>whitelist</comment> strategy:
+
+  <info>%command.full_name% feature whitelist allow target</info>
+  <info>%command.full_name% feature whitelist disallow target</info>
+
+To configure percentage for <comment>feature</comment> with <comment>percentage</comment> strategy:
+
+  <info>%command.full_name% feature percentage slide 50</info>
+HELP
+        );
         $this->addArgument('feature', InputArgument::REQUIRED, 'The feature name');
         $this->addArgument('strategy', InputArgument::REQUIRED, 'The strategy name');
         $this->addArgument('method', InputArgument::REQUIRED, 'The configuration method name');
