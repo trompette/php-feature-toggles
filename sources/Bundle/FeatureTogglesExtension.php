@@ -13,6 +13,7 @@ use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 use Trompette\FeatureToggles\FeatureRegistry;
 use Trompette\FeatureToggles\OnOffStrategy\OnOff;
+use Trompette\FeatureToggles\ORM\SchemaSubscriber;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 use Trompette\FeatureToggles\ToggleRouter;
 use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
@@ -27,6 +28,7 @@ class FeatureTogglesExtension extends Extension
         $this->defineTogglingStrategies($config['doctrine_dbal_connection'], $container);
         $this->defineToggleRouter($container);
         $this->defineConsoleCommands($container);
+        $this->defineDoctrineEventSubscriber($container);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container)
@@ -111,6 +113,17 @@ class FeatureTogglesExtension extends Extension
             ->register(ConfigureFeatureCommand::class, ConfigureFeatureCommand::class)
             ->addArgument(new Reference(ToggleRouter::class))
             ->addTag('console.command')
+        ;
+    }
+
+    private function defineDoctrineEventSubscriber(ContainerBuilder $container): void
+    {
+        $container
+            ->register(SchemaSubscriber::class, SchemaSubscriber::class)
+            ->addArgument(new Reference(OnOffStrategyConfigurationRepository::class))
+            ->addArgument(new Reference(WhitelistStrategyConfigurationRepository::class))
+            ->addArgument(new Reference(PercentageStrategyConfigurationRepository::class))
+            ->addTag('doctrine.event_subscriber')
         ;
     }
 }
