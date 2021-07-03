@@ -2,46 +2,24 @@
 
 namespace Test\Trompette\FeatureToggles\DBAL;
 
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Schema;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
-use PHPUnit\Framework\TestCase;
 
-class OnOffStrategyConfigurationRepositoryTest extends TestCase
+class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
-    public function testSchemaIsConfiguredForUnderlyingConnectionOnly()
+    protected function createRepository()
     {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new OnOffStrategyConfigurationRepository($DBALConnection);
-        $repository->configureSchema($schema = new Schema(), $DBALConnection);
-
-        static::assertCount(1, $schema->getTables());
-
-        $otherDBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository->configureSchema($schema = new Schema(), $otherDBALConnection);
-
-        static::assertEmpty($schema->getTables());
-    }
-
-    public function testSchemaIsMigrated()
-    {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new OnOffStrategyConfigurationRepository($DBALConnection);
-        $repository->migrateSchema();
-
-        static::assertCount(1, $DBALConnection->getSchemaManager()->listTables());
+        $this->repository = new OnOffStrategyConfigurationRepository($this->connection);
     }
 
     public function testConfigurationIsPersisted()
     {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new OnOffStrategyConfigurationRepository($DBALConnection);
-        $repository->migrateSchema();
+        $this->repository->migrateSchema();
+        static::assertFalse($this->repository->isEnabled('feature'));
 
-        static::assertFalse($repository->isEnabled('feature'));
-        $repository->setEnabled(true, 'feature');
-        static::assertTrue($repository->isEnabled('feature'));
-        $repository->setEnabled(false, 'feature');
-        static::assertFalse($repository->isEnabled('feature'));
+        $this->repository->setEnabled(true, 'feature');
+        static::assertTrue($this->repository->isEnabled('feature'));
+
+        $this->repository->setEnabled(false, 'feature');
+        static::assertFalse($this->repository->isEnabled('feature'));
     }
 }
