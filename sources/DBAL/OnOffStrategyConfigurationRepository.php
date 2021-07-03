@@ -4,23 +4,12 @@ namespace Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\BooleanType;
-use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
 use Trompette\FeatureToggles\OnOffStrategy\ConfigurationRepository;
 
-class OnOffStrategyConfigurationRepository implements ConfigurationRepository, SchemaMigrator
+class OnOffStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
-
     public function isEnabled(string $feature): bool
     {
         $sql = 'select enabled from feature_toggles_onoff where feature = ?';
@@ -61,23 +50,19 @@ class OnOffStrategyConfigurationRepository implements ConfigurationRepository, S
         );
     }
 
-    public function migrateSchema(): void
+    public function configureSchema(Schema $schema, Connection $connection): void
     {
-        $schemaManager = $this->connection->getSchemaManager();
-
-        if ($schemaManager->tablesExist(['feature_toggles_onoff'])) {
+        if ($connection !== $this->connection) {
             return;
         }
 
-        $schemaManager->createTable(new Table(
-            'feature_toggles_onoff',
-            [
-                new Column('feature', new StringType()),
-                new Column('enabled', new BooleanType()),
-            ],
-            [
-                new Index('feature_toggles_onoff_pk', ['feature'], true, true),
-            ]
-        ));
+        if ($schema->hasTable('feature_toggles_onoff')) {
+            return;
+        }
+
+        $table = $schema->createTable('feature_toggles_onoff');
+        $table->addColumn('feature', Types::STRING);
+        $table->addColumn('enabled', Types::BOOLEAN);
+        $table->setPrimaryKey(['feature'], 'feature_toggles_onoff_pk');
     }
 }
