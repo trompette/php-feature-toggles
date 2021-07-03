@@ -44,7 +44,7 @@ class PercentageStrategyConfigurationRepository extends SchemaMigrator implement
         }
 
         if ($schema->hasTable('feature_toggles_percentage')) {
-            return;
+            $schema->dropTable('feature_toggles_percentage');
         }
 
         $table = $schema->createTable('feature_toggles_percentage');

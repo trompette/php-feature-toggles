@@ -57,7 +57,7 @@ class OnOffStrategyConfigurationRepository extends SchemaMigrator implements Con
         }
 
         if ($schema->hasTable('feature_toggles_onoff')) {
-            return;
+            $schema->dropTable('feature_toggles_onoff');
         }
 
         $table = $schema->createTable('feature_toggles_onoff');

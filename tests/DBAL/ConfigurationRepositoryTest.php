@@ -4,7 +4,12 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 
@@ -34,9 +39,27 @@ abstract class ConfigurationRepositoryTest extends TestCase
         static::assertEmpty($schema->getTables());
     }
 
-    public function testSchemaIsMigrated()
+    public function testAlteredSchemaCanBeMigrated()
     {
+        $schemaManager = $this->connection->getSchemaManager();
+
         $this->repository->migrateSchema();
-        static::assertCount(1, $this->connection->getSchemaManager()->listTables());
+        $schema = $schemaManager->createSchema();
+        static::assertCount(1, $tables = $schema->getTables());
+
+        $schemaManager->alterTable($this->createTableDiff(current($tables)));
+        static::assertNotEquals($schema, $schemaManager->createSchema());
+
+        $this->repository->migrateSchema();
+        static::assertEquals($schema, $schemaManager->createSchema());
+    }
+
+    private function createTableDiff(Table $table): TableDiff
+    {
+        $tableDiff = new TableDiff($table->getName());
+        $tableDiff->addedColumns[] = new Column(uniqid('c_'), Type::getType(Types::INTEGER), ['default' => 0]);
+        $tableDiff->fromTable = $table;
+
+        return $tableDiff;
     }
 }
