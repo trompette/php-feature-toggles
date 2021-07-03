@@ -30,12 +30,14 @@
     },
     "require-dev": {
         "ext-sqlite3": "*",
+        "doctrine/orm": ">=2.8",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "symfony/dependency-injection": ">=4.4",
         "symfony/http-kernel": ">=4.4"
     },
     "suggest": {
+        "doctrine/orm": "To benefit from automatic schema creation",
         "symfony/dependency-injection": "To use the provided bundle",
         "symfony/http-kernel": "To use the provided bundle"
     }

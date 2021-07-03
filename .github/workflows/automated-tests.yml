@@ -17,7 +17,7 @@ jobs:
       matrix:
         dbal-version:
           - "2.12.*"
-          - "3.0.*"
+          - "2.13.*"
         php-version:
           - "7.3"
           - "7.4"

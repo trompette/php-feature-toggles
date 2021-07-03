@@ -3,22 +3,12 @@
 namespace Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
 use Trompette\FeatureToggles\WhitelistStrategy\ConfigurationRepository;
 
-class WhitelistStrategyConfigurationRepository implements ConfigurationRepository, SchemaMigrator
+class WhitelistStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
-
     public function getWhitelistedTargets(string $feature): array
     {
         $sql = 'select target from feature_toggles_whitelist where feature = ?';
@@ -41,23 +31,19 @@ class WhitelistStrategyConfigurationRepository implements ConfigurationRepositor
         $this->connection->executeQuery($sql, [$feature, $target]);
     }
 
-    public function migrateSchema(): void
+    public function configureSchema(Schema $schema, Connection $connection): void
     {
-        $schemaManager = $this->connection->getSchemaManager();
-
-        if ($schemaManager->tablesExist(['feature_toggles_whitelist'])) {
+        if ($connection !== $this->connection) {
             return;
         }
 
-        $schemaManager->createTable(new Table(
-            'feature_toggles_whitelist',
-            [
-                new Column('feature', new StringType()),
-                new Column('target', new StringType()),
-            ],
-            [
-                new Index('feature_toggles_whitelist_feature_idx', ['feature']),
-            ]
-        ));
+        if ($schema->hasTable('feature_toggles_whitelist')) {
+            return;
+        }
+
+        $table = $schema->createTable('feature_toggles_whitelist');
+        $table->addColumn('feature', Types::STRING);
+        $table->addColumn('target', Types::STRING);
+        $table->addIndex(['feature'], 'feature_toggles_whitelist_feature_idx');
     }
 }
