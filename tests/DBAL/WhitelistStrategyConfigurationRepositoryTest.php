@@ -2,47 +2,24 @@
 
 namespace Test\Trompette\FeatureToggles\DBAL;
 
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Schema;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
-use PHPUnit\Framework\TestCase;
 
-class WhitelistStrategyConfigurationRepositoryTest extends TestCase
+class WhitelistStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
-    public function testSchemaIsConfiguredForUnderlyingConnectionOnly()
+    protected function createRepository()
     {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new WhitelistStrategyConfigurationRepository($DBALConnection);
-        $repository->configureSchema($schema = new Schema(), $DBALConnection);
-
-        static::assertCount(1, $schema->getTables());
-
-        $otherDBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository->configureSchema($schema = new Schema(), $otherDBALConnection);
-
-        static::assertEmpty($schema->getTables());
-    }
-
-
-    public function testSchemaIsMigrated()
-    {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new WhitelistStrategyConfigurationRepository($DBALConnection);
-        $repository->migrateSchema();
-
-        static::assertCount(1, $DBALConnection->getSchemaManager()->listTables());
+        $this->repository = new WhitelistStrategyConfigurationRepository($this->connection);
     }
 
     public function testConfigurationIsPersisted()
     {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
-        $repository = new WhitelistStrategyConfigurationRepository($DBALConnection);
-        $repository->migrateSchema();
+        $this->repository->migrateSchema();
+        static::assertEmpty($this->repository->getWhitelistedTargets('feature'));
 
-        static::assertEmpty($repository->getWhitelistedTargets('feature'));
-        $repository->addToWhitelist('target', 'feature');
-        static::assertSame(['target'], $repository->getWhitelistedTargets('feature'));
-        $repository->removeFromWhitelist('target', 'feature');
-        static::assertEmpty($repository->getWhitelistedTargets('feature'));
+        $this->repository->addToWhitelist('target', 'feature');
+        static::assertSame(['target'], $this->repository->getWhitelistedTargets('feature'));
+
+        $this->repository->removeFromWhitelist('target', 'feature');
+        static::assertEmpty($this->repository->getWhitelistedTargets('feature'));
     }
 }

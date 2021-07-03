@@ -38,7 +38,7 @@ class WhitelistStrategyConfigurationRepository extends SchemaMigrator implements
         }
 
         if ($schema->hasTable('feature_toggles_whitelist')) {
-            return;
+            $schema->dropTable('feature_toggles_whitelist');
         }
 
         $table = $schema->createTable('feature_toggles_whitelist');
