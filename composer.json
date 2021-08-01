@@ -40,5 +40,8 @@
         "doctrine/orm": "To benefit from automatic schema creation",
         "symfony/dependency-injection": "To use the provided bundle",
         "symfony/http-kernel": "To use the provided bundle"
+    },
+    "scripts": {
+        "test": "phpunit --colors=always --testdox tests/"
     }
 }

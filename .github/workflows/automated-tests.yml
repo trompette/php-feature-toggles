@@ -42,5 +42,5 @@ jobs:
     - name: "Require Doctrine DBAL and Symfony versions from matrix"
       run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist doctrine/dbal:${{ matrix.dbal-version }} symfony/symfony:${{ matrix.symfony-version }}"
 
-    - name: "Run PHPUnit"
-      run: "vendor/bin/phpunit --colors=always --testdox tests/"
+    - name: "Run test suite"
+      run: "composer run-script test"
