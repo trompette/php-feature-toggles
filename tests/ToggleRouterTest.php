@@ -5,8 +5,9 @@ namespace Test\Trompette\FeatureToggles;
 use Assert\InvalidArgumentException;
 use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Log\Test\TestLogger;
+use Psr\Log\LoggerInterface;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
@@ -24,11 +25,13 @@ class ToggleRouterTest extends TestCase
 
     public function testTargetDoesNotHaveUnregisteredFeature()
     {
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->warning('Feature is unregistered', Argument::type('array'))->shouldBeCalled();
+
         $router = $this->configureToggleRouter();
-        $router->setLogger($logger = new TestLogger());
+        $router->setLogger($logger->reveal());
 
         static::assertFalse($router->hasFeature('target', 'feature'));
-        static::assertTrue($logger->hasWarning('Feature is unregistered'));
     }
 
     public function testTargetHasRegisteredFeatureWithValidStrategy()
@@ -47,11 +50,13 @@ class ToggleRouterTest extends TestCase
 
     public function testTargetDoesNotHaveRegisteredFeatureWithInvalidStrategy()
     {
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->warning('Feature strategy is invalid', Argument::type('array'))->shouldBeCalled();
+
         $router = $this->configureToggleRouter(new FeatureDefinition('feature', 'awesome feature', 'invalid'));
-        $router->setLogger($logger = new TestLogger());
+        $router->setLogger($logger->reveal());
 
         static::assertFalse($router->hasFeature('target', 'feature'));
-        static::assertTrue($logger->hasWarning('Feature strategy is invalid'));
     }
 
     public function testFeatureConfigurationCanBeRetrievedByStrategy()
@@ -69,11 +74,12 @@ class ToggleRouterTest extends TestCase
         $strategy = $this->prophesize(FakeStrategy::class);
         $strategy->configure('value', 'feature')->shouldBeCalled();
 
-        $router = $this->configureToggleRouter(null, ['fake' => $strategy->reveal()]);
-        $router->setLogger($logger = new TestLogger());
-        $router->configureFeature('feature', 'fake', 'configure', 'value');
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->info('Feature has been configured', Argument::type('array'))->shouldBeCalled();
 
-        static::assertTrue($logger->hasInfo('Feature has been configured'));
+        $router = $this->configureToggleRouter(null, ['fake' => $strategy->reveal()]);
+        $router->setLogger($logger->reveal());
+        $router->configureFeature('feature', 'fake', 'configure', 'value');
     }
 
     public function testRegisteredFeatureCanBeConfiguredByStrategy()
@@ -81,14 +87,15 @@ class ToggleRouterTest extends TestCase
         $strategy = $this->prophesize(FakeStrategy::class);
         $strategy->configure('value', 'feature')->shouldBeCalled();
 
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->info('Feature has been configured', Argument::type('array'))->shouldBeCalled();
+
         $router = $this->configureToggleRouter(
             new FeatureDefinition('feature', 'awesome feature', 'true'),
             ['fake' => $strategy->reveal()]
         );
-        $router->setLogger($logger = new TestLogger());
+        $router->setLogger($logger->reveal());
         $router->configureFeature('feature', 'fake', 'configure', 'value');
-
-        static::assertTrue($logger->hasInfo('Feature has been configured'));
     }
 
     public function testFeatureCannotBeConfiguredWhenStrategyDoesNotExist()
