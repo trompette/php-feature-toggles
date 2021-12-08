@@ -20,9 +20,9 @@
         }
     },
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "beberlei/assert": ">=3.2",
-        "doctrine/dbal": ">=2.12",
+        "doctrine/dbal": ">=2.13",
         "psr/log": ">=1.1",
         "symfony/config": ">=4.4",
         "symfony/console": ">=4.4",
@@ -30,7 +30,7 @@
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "doctrine/orm": ">=2.8",
+        "doctrine/orm": ">=2.10",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "symfony/dependency-injection": ">=4.4",
