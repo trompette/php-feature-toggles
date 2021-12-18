@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FeatureTogglesBundle extends Bundle
 {
-    public function getContainerExtensionClass()
+    public function getContainerExtensionClass(): string
     {
         return FeatureTogglesExtension::class;
     }
