@@ -24,7 +24,7 @@ class FeatureTogglesBundleTest extends TestCase
 
 class AppKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [new FeatureTogglesBundle()];
     }
@@ -50,12 +50,12 @@ class AppKernel extends Kernel
         });
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/php-feature-toggles/'.Kernel::VERSION.'/cache';
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir().'/php-feature-toggles/'.Kernel::VERSION.'/logs';
     }
