@@ -41,7 +41,10 @@ abstract class ConfigurationRepositoryTest extends TestCase
 
     public function testAlteredSchemaCanBeMigrated()
     {
-        $schemaManager = $this->connection->getSchemaManager();
+        $schemaManager = method_exists(Connection::class, 'createSchemaManager')
+            ? $this->connection->createSchemaManager()
+            : $this->connection->getSchemaManager()
+        ;
 
         $this->repository->migrateSchema();
         $schema = $schemaManager->createSchema();
