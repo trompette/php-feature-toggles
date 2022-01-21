@@ -48,7 +48,7 @@ HELP
         $this->addArgument('parameters', InputArgument::IS_ARRAY, 'Some extra parameters', []);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->toggleRouter->configureFeature(
             $feature = $input->getArgument('feature'),

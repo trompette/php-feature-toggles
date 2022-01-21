@@ -34,7 +34,7 @@ class ShowFeatureConfigurationCommand extends Command
         $this->addArgument('target', InputArgument::OPTIONAL, 'An optional target');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $feature = $input->getArgument('feature');
         $target = $input->getArgument('target');
