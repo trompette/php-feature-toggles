@@ -41,9 +41,7 @@ class ToggleRouter implements LoggerAwareInterface
 
         $expression = $this->registry->getDefinition($feature)->getStrategy();
         $values = array_map(
-            function (TogglingStrategy $strategy) use ($target, $feature) {
-                return $strategy->decideIfTargetHasFeature($target, $feature);
-            },
+            fn (TogglingStrategy $strategy) => $strategy->decideIfTargetHasFeature($target, $feature),
             $this->strategies
         );
 
@@ -65,9 +63,7 @@ class ToggleRouter implements LoggerAwareInterface
     public function getFeatureConfiguration(string $feature): array
     {
         return array_map(
-            function (TogglingStrategy $strategy) use ($feature) {
-                return $strategy->getConfiguration($feature);
-            },
+            fn (TogglingStrategy $strategy) => $strategy->getConfiguration($feature),
             $this->strategies
         );
     }
