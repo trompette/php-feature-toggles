@@ -10,8 +10,7 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class ConfigureFeatureCommand extends Command
 {
-    /** @var ToggleRouter */
-    private $toggleRouter;
+    private ToggleRouter $toggleRouter;
 
     public function __construct(ToggleRouter $toggleRouter)
     {

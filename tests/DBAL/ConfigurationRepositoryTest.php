@@ -15,11 +15,8 @@ use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 
 abstract class ConfigurationRepositoryTest extends TestCase
 {
-    /** @var Connection */
-    protected $connection;
-
-    /** @var SchemaMigrator */
-    protected $repository;
+    protected Connection $connection;
+    protected SchemaMigrator $repository;
 
     protected function setUp(): void
     {

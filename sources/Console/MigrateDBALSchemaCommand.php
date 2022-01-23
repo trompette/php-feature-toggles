@@ -10,7 +10,7 @@ use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 class MigrateDBALSchemaCommand extends Command
 {
     /** @var SchemaMigrator[] */
-    private $migrators;
+    private array $migrators;
 
     public function __construct(SchemaMigrator ...$migrators)
     {

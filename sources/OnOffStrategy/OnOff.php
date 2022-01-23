@@ -6,8 +6,7 @@ use Trompette\FeatureToggles\TogglingStrategy;
 
 class OnOff implements TogglingStrategy
 {
-    /** @var ConfigurationRepository */
-    private $configurationRepository;
+    private ConfigurationRepository $configurationRepository;
 
     public function __construct(ConfigurationRepository $configurationRepository)
     {

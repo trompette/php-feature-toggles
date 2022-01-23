@@ -12,11 +12,8 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class ShowFeatureConfigurationCommand extends Command
 {
-    /** @var FeatureRegistry */
-    private $featureRegistry;
-
-    /** @var ToggleRouter */
-    private $toggleRouter;
+    private FeatureRegistry $featureRegistry;
+    private ToggleRouter $toggleRouter;
 
     public function __construct(FeatureRegistry $featureRegistry, ToggleRouter $toggleRouter)
     {

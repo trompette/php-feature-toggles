@@ -13,11 +13,10 @@ class ToggleRouter implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /** @var FeatureRegistry */
-    private $registry;
+    private FeatureRegistry $registry;
 
     /** @var TogglingStrategy[] */
-    private $strategies;
+    private array $strategies;
 
     public function __construct(FeatureRegistry $registry, array $strategies = [])
     {
