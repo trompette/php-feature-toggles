@@ -13,7 +13,7 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class FeatureTogglesBundleTest extends TestCase
 {
-    public function testAppKernelCanBootWithBundleRegistered()
+    public function testAppKernelCanBootWithBundleRegistered(): void
     {
         $kernel = new AppKernel('test', true);
         $kernel->boot();
@@ -29,7 +29,7 @@ class AppKernel extends Kernel
         return [new FeatureTogglesBundle()];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(function (ContainerBuilder $container) {
             $container

@@ -20,7 +20,7 @@ class ConfigureFeatureCommand extends Command
         $this->toggleRouter = $toggleRouter;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Configures a feature');
         $this->setHelp(

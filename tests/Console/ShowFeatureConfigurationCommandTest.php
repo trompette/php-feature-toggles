@@ -15,7 +15,7 @@ class ShowFeatureConfigurationCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testCommandCanBeExecutedWithAFeature()
+    public function testCommandCanBeExecutedWithAFeature(): void
     {
         $commandTester = new CommandTester($this->configureCommand($withTarget = false));
         $commandTester->execute(['feature' => 'feature']);
@@ -26,7 +26,7 @@ class ShowFeatureConfigurationCommandTest extends TestCase
         static::assertStringNotContainsString('Target', $commandTester->getDisplay());
     }
 
-    public function testCommandCanBeExecutedWithAFeatureAndATarget()
+    public function testCommandCanBeExecutedWithAFeatureAndATarget(): void
     {
         $commandTester = new CommandTester($this->configureCommand($withTarget = true));
         $commandTester->execute(['feature' => 'feature', 'target' => 'target']);

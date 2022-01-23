@@ -11,28 +11,28 @@ class WhitelistTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testConfigurationCanBeRetrieved()
+    public function testConfigurationCanBeRetrieved(): void
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 
         static::assertSame(['whitelistedTargets' => ['whitelisted']], $whitelist->getConfiguration('feature'));
     }
 
-    public function testTargetDoesNotHaveFeatureWhenWhitelistIsEmpty()
+    public function testTargetDoesNotHaveFeatureWhenWhitelistIsEmpty(): void
     {
         $whitelist = $this->configureWhitelist('feature', []);
 
         static::assertFalse($whitelist->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testTargetHasFeatureWhenWhitelisted()
+    public function testTargetHasFeatureWhenWhitelisted(): void
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 
         static::assertTrue($whitelist->decideIfTargetHasFeature('whitelisted', 'feature'));
     }
 
-    public function testTargetDoesNotHaveFeatureWhenNotWhitelisted()
+    public function testTargetDoesNotHaveFeatureWhenNotWhitelisted(): void
     {
         $whitelist = $this->configureWhitelist('feature', ['whitelisted']);
 

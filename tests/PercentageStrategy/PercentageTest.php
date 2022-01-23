@@ -12,42 +12,42 @@ class PercentageTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testConfigurationCanBeRetrieved()
+    public function testConfigurationCanBeRetrieved(): void
     {
         $percentage = $this->configurePercentage('feature', 25);
 
         static::assertSame(['percentage' => 25], $percentage->getConfiguration('feature'));
     }
 
-    public function testTargetDoesNotHaveFeatureWhenPercentageIs0()
+    public function testTargetDoesNotHaveFeatureWhenPercentageIs0(): void
     {
         $percentage = $this->configurePercentage('feature', 0);
 
         static::assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testTargetHasFeatureWhenPercentageIs100()
+    public function testTargetHasFeatureWhenPercentageIs100(): void
     {
         $percentage = $this->configurePercentage('feature', 100);
 
         static::assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testTargetHasFeatureWhenPercentageIsAboveComputedHash()
+    public function testTargetHasFeatureWhenPercentageIsAboveComputedHash(): void
     {
         $percentage = $this->configurePercentage('feature', 58);
 
         static::assertTrue($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testTargetDoesNotHaveFeatureWhenPercentageIsBelowComputedHash()
+    public function testTargetDoesNotHaveFeatureWhenPercentageIsBelowComputedHash(): void
     {
         $percentage = $this->configurePercentage('feature', 56);
 
         static::assertFalse($percentage->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testThatPercentageCannotBeNegative()
+    public function testThatPercentageCannotBeNegative(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -55,7 +55,7 @@ class PercentageTest extends TestCase
         $percentage->slide(-1, 'feature');
     }
 
-    public function testThatPercentageCannotBeHigherThan100()
+    public function testThatPercentageCannotBeHigherThan100(): void
     {
         $this->expectException(InvalidArgumentException::class);
 

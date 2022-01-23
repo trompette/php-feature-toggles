@@ -20,7 +20,7 @@ use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 class FeatureTogglesExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
@@ -36,7 +36,7 @@ class FeatureTogglesExtension extends Extension
         return new FeatureTogglesConfiguration();
     }
 
-    private function defineFeatureRegistry(array $declaredFeatures, ContainerBuilder $container)
+    private function defineFeatureRegistry(array $declaredFeatures, ContainerBuilder $container): void
     {
         $featureRegistry = $container->register(FeatureRegistry::class, FeatureRegistry::class);
 
@@ -48,7 +48,7 @@ class FeatureTogglesExtension extends Extension
         }
     }
 
-    private function defineTogglingStrategies(string $doctrineDBALConnection, ContainerBuilder $container)
+    private function defineTogglingStrategies(string $doctrineDBALConnection, ContainerBuilder $container): void
     {
         $configurationRepositories = [
             'onoff' => OnOffStrategyConfigurationRepository::class,
@@ -71,7 +71,7 @@ class FeatureTogglesExtension extends Extension
         }
     }
 
-    private function defineToggleRouter(ContainerBuilder $container)
+    private function defineToggleRouter(ContainerBuilder $container): void
     {
         $definition = $container
             ->register(ToggleRouter::class, ToggleRouter::class)
@@ -92,7 +92,7 @@ class FeatureTogglesExtension extends Extension
         }
     }
 
-    private function defineConsoleCommands(ContainerBuilder $container)
+    private function defineConsoleCommands(ContainerBuilder $container): void
     {
         $container
             ->register(MigrateDBALSchemaCommand::class, MigrateDBALSchemaCommand::class)

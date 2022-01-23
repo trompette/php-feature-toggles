@@ -26,7 +26,7 @@ class ShowFeatureConfigurationCommand extends Command
         $this->toggleRouter = $toggleRouter;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Shows a feature configuration');
         $this->setHelp('This command shows a feature configuration and can answer if a target has a feature.');

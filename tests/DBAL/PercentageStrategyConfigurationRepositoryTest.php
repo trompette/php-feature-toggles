@@ -6,12 +6,12 @@ use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 
 class PercentageStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
-    protected function createRepository()
+    protected function createRepository(): void
     {
         $this->repository = new PercentageStrategyConfigurationRepository($this->connection);
     }
 
-    public function testConfigurationIsPersisted()
+    public function testConfigurationIsPersisted(): void
     {
         $this->repository->migrateSchema();
         static::assertSame(0, $this->repository->getPercentage('feature'));

@@ -27,9 +27,9 @@ abstract class ConfigurationRepositoryTest extends TestCase
         $this->createRepository();
     }
 
-    abstract protected function createRepository();
+    abstract protected function createRepository(): void;
 
-    public function testSchemaIsConfiguredForUnderlyingConnectionOnly()
+    public function testSchemaIsConfiguredForUnderlyingConnectionOnly(): void
     {
         $this->repository->configureSchema($schema = new Schema(), $this->connection);
         static::assertCount(1, $schema->getTables());
@@ -39,7 +39,7 @@ abstract class ConfigurationRepositoryTest extends TestCase
         static::assertEmpty($schema->getTables());
     }
 
-    public function testAlteredSchemaCanBeMigrated()
+    public function testAlteredSchemaCanBeMigrated(): void
     {
         $schemaManager = $this->connection->getSchemaManager();
 

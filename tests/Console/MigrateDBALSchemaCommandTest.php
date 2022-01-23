@@ -12,7 +12,7 @@ class MigrateDBALSchemaCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testCommandCanBeExecuted()
+    public function testCommandCanBeExecuted(): void
     {
         $schemaMigrator = $this->prophesize(SchemaMigrator::class);
         $schemaMigrator->migrateSchema()->shouldBeCalled();

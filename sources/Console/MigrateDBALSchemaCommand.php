@@ -19,7 +19,7 @@ class MigrateDBALSchemaCommand extends Command
         $this->migrators = $migrators;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Migrates DBAL schema');
         $this->setHelp('This command migrates a DBAL schema so that feature configurations can be persisted.');

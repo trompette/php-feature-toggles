@@ -6,12 +6,12 @@ use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 
 class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
-    protected function createRepository()
+    protected function createRepository(): void
     {
         $this->repository = new OnOffStrategyConfigurationRepository($this->connection);
     }
 
-    public function testConfigurationIsPersisted()
+    public function testConfigurationIsPersisted(): void
     {
         $this->repository->migrateSchema();
         static::assertFalse($this->repository->isEnabled('feature'));
