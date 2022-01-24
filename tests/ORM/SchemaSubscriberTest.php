@@ -16,7 +16,7 @@ class SchemaSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testSchemaIsConfiguredAfterGeneration()
+    public function testSchemaIsConfiguredAfterGeneration(): void
     {
         $schema = new Schema();
         $connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);

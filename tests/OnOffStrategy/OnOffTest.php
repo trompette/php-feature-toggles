@@ -11,21 +11,21 @@ class OnOffTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testConfigurationCanBeRetrieved()
+    public function testConfigurationCanBeRetrieved(): void
     {
         $onOff = $this->configureOnOff('feature', true);
 
         static::assertSame(['enabled' => true], $onOff->getConfiguration('feature'));
     }
 
-    public function testTargetDoesNotHaveFeatureWhenNotEnabled()
+    public function testTargetDoesNotHaveFeatureWhenNotEnabled(): void
     {
         $onOff = $this->configureOnOff('feature', false);
 
         static::assertFalse($onOff->decideIfTargetHasFeature('target', 'feature'));
     }
 
-    public function testTargetHasFeatureWhenEnabled()
+    public function testTargetHasFeatureWhenEnabled(): void
     {
         $onOff = $this->configureOnOff('feature', true);
 

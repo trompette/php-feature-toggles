@@ -6,12 +6,12 @@ use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 
 class WhitelistStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
-    protected function createRepository()
+    protected function createRepository(): void
     {
         $this->repository = new WhitelistStrategyConfigurationRepository($this->connection);
     }
 
-    public function testConfigurationIsPersisted()
+    public function testConfigurationIsPersisted(): void
     {
         $this->repository->migrateSchema();
         static::assertEmpty($this->repository->getWhitelistedTargets('feature'));

@@ -23,7 +23,7 @@ class ToggleRouterTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testTargetDoesNotHaveUnregisteredFeature()
+    public function testTargetDoesNotHaveUnregisteredFeature(): void
     {
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->warning('Feature is unregistered', Argument::type('array'))->shouldBeCalled();
@@ -34,21 +34,21 @@ class ToggleRouterTest extends TestCase
         static::assertFalse($router->hasFeature('target', 'feature'));
     }
 
-    public function testTargetHasRegisteredFeatureWithValidStrategy()
+    public function testTargetHasRegisteredFeatureWithValidStrategy(): void
     {
         $router = $this->configureToggleRouter(new FeatureDefinition('feature', 'awesome feature', 'true'));
 
         static::assertTrue($router->hasFeature('target', 'feature'));
     }
 
-    public function testTargetDoesNotHaveRegisteredFeatureWithValidStrategy()
+    public function testTargetDoesNotHaveRegisteredFeatureWithValidStrategy(): void
     {
         $router = $this->configureToggleRouter(new FeatureDefinition('feature', 'awesome feature', 'false'));
 
         static::assertFalse($router->hasFeature('target', 'feature'));
     }
 
-    public function testTargetDoesNotHaveRegisteredFeatureWithInvalidStrategy()
+    public function testTargetDoesNotHaveRegisteredFeatureWithInvalidStrategy(): void
     {
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->warning('Feature strategy is invalid', Argument::type('array'))->shouldBeCalled();
@@ -59,7 +59,7 @@ class ToggleRouterTest extends TestCase
         static::assertFalse($router->hasFeature('target', 'feature'));
     }
 
-    public function testFeatureConfigurationCanBeRetrievedByStrategy()
+    public function testFeatureConfigurationCanBeRetrievedByStrategy(): void
     {
         $strategy = $this->prophesize(FakeStrategy::class);
         $strategy->getConfiguration('feature')->willReturn(['key' => 'value']);
@@ -69,7 +69,7 @@ class ToggleRouterTest extends TestCase
         static::assertSame(['fake' => ['key' => 'value']], $router->getFeatureConfiguration('feature'));
     }
 
-    public function testUnregisteredFeatureCanBeConfiguredByStrategy()
+    public function testUnregisteredFeatureCanBeConfiguredByStrategy(): void
     {
         $strategy = $this->prophesize(FakeStrategy::class);
         $strategy->configure('value', 'feature')->shouldBeCalled();
@@ -82,7 +82,7 @@ class ToggleRouterTest extends TestCase
         $router->configureFeature('feature', 'fake', 'configure', 'value');
     }
 
-    public function testRegisteredFeatureCanBeConfiguredByStrategy()
+    public function testRegisteredFeatureCanBeConfiguredByStrategy(): void
     {
         $strategy = $this->prophesize(FakeStrategy::class);
         $strategy->configure('value', 'feature')->shouldBeCalled();
@@ -98,7 +98,7 @@ class ToggleRouterTest extends TestCase
         $router->configureFeature('feature', 'fake', 'configure', 'value');
     }
 
-    public function testFeatureCannotBeConfiguredWhenStrategyDoesNotExist()
+    public function testFeatureCannotBeConfiguredWhenStrategyDoesNotExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -106,7 +106,7 @@ class ToggleRouterTest extends TestCase
         $router->configureFeature('feature', 'invalid', 'configure');
     }
 
-    public function testFeatureCannotBeConfiguredWhenMethodDoesNotExist()
+    public function testFeatureCannotBeConfiguredWhenMethodDoesNotExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -116,7 +116,7 @@ class ToggleRouterTest extends TestCase
         $router->configureFeature('feature', 'fake', 'absent');
     }
 
-    public function testStrategiesCanBeCombinedWithBooleanOperators()
+    public function testStrategiesCanBeCombinedWithBooleanOperators(): void
     {
         $router = $this->configureToggleRouter(
             new FeatureDefinition('feature', 'awesome feature', 'onoff or whitelist or percentage'),

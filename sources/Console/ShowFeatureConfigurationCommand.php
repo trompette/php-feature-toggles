@@ -12,11 +12,8 @@ use Trompette\FeatureToggles\ToggleRouter;
 
 class ShowFeatureConfigurationCommand extends Command
 {
-    /** @var FeatureRegistry */
-    private $featureRegistry;
-
-    /** @var ToggleRouter */
-    private $toggleRouter;
+    private FeatureRegistry $featureRegistry;
+    private ToggleRouter $toggleRouter;
 
     public function __construct(FeatureRegistry $featureRegistry, ToggleRouter $toggleRouter)
     {
@@ -26,7 +23,7 @@ class ShowFeatureConfigurationCommand extends Command
         $this->toggleRouter = $toggleRouter;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Shows a feature configuration');
         $this->setHelp('This command shows a feature configuration and can answer if a target has a feature.');

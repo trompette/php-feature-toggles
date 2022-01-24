@@ -4,14 +4,9 @@ namespace Trompette\FeatureToggles;
 
 class FeatureDefinition
 {
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $description;
-
-    /** @var string */
-    private $strategy;
+    private string $name;
+    private string $description;
+    private string $strategy;
 
     public function __construct(string $name, string $description, string $strategy)
     {
@@ -25,7 +20,7 @@ class FeatureDefinition
         return $this->name;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }

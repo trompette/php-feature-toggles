@@ -6,8 +6,8 @@ use Assert\Assert;
 
 class FeatureRegistry
 {
-    /** @var array */
-    private $definitions = [];
+    /** @var FeatureDefinition[] */
+    private array $definitions = [];
 
     public function register(): void
     {

@@ -9,7 +9,7 @@ use Trompette\FeatureToggles\FeatureRegistry;
 
 class FeatureRegistryTest extends TestCase
 {
-    public function testFeatureCanBeRegistered()
+    public function testFeatureCanBeRegistered(): void
     {
         $registry = new FeatureRegistry();
         $registry->register(new FeatureDefinition('feature', 'awesome feature', 'strategy'));
@@ -19,7 +19,7 @@ class FeatureRegistryTest extends TestCase
         static::assertTrue($registry->exists('other feature'));
     }
 
-    public function testFeatureCannotBeRegisteredTwice()
+    public function testFeatureCannotBeRegisteredTwice(): void
     {
         $this->expectException(InvalidArgumentException::class);
 

@@ -6,8 +6,7 @@ use Doctrine\DBAL\Connection;
 
 abstract class SchemaMigrator implements SchemaConfigurator
 {
-    /** @var Connection */
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(Connection $connection)
     {

@@ -12,7 +12,7 @@ class ConfigureFeatureCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testCommandCanBeExecutedWithoutExtraParameters()
+    public function testCommandCanBeExecutedWithoutExtraParameters(): void
     {
         $toggleRouter = $this->prophesize(ToggleRouter::class);
         $toggleRouter->configureFeature('f', 's', 'm', [])->shouldBeCalled();
@@ -28,7 +28,7 @@ class ConfigureFeatureCommandTest extends TestCase
         static::assertStringContainsString('Feature f configured!', $commandTester->getDisplay());
     }
 
-    public function testCommandCanBeExecutedWithExtraParameters()
+    public function testCommandCanBeExecutedWithExtraParameters(): void
     {
         $toggleRouter = $this->prophesize(ToggleRouter::class);
         $toggleRouter->configureFeature('f', 's', 'm', ['p1', 'p2'])->shouldBeCalled();
