@@ -31,7 +31,7 @@ class FeatureTogglesExtension extends Extension
         $this->defineDoctrineEventSubscriber($container);
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): FeatureTogglesConfiguration
     {
         return new FeatureTogglesConfiguration();
     }

@@ -25,7 +25,7 @@ class MigrateDBALSchemaCommand extends Command
         $this->setHelp('This command migrates a DBAL schema so that feature configurations can be persisted.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->migrators as $migrator) {
             $migrator->migrateSchema();
