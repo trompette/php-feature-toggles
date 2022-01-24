@@ -22,7 +22,7 @@ class FeatureTogglesExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
+        $config = $this->processConfiguration(new FeatureTogglesConfiguration(), $configs);
 
         $this->defineFeatureRegistry($config['declared_features'], $container);
         $this->defineTogglingStrategies($config['doctrine_dbal_connection'], $container);
@@ -31,18 +31,13 @@ class FeatureTogglesExtension extends Extension
         $this->defineDoctrineEventSubscriber($container);
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container): FeatureTogglesConfiguration
-    {
-        return new FeatureTogglesConfiguration();
-    }
-
     private function defineFeatureRegistry(array $declaredFeatures, ContainerBuilder $container): void
     {
         $featureRegistry = $container->register(FeatureRegistry::class, FeatureRegistry::class);
 
         foreach ($declaredFeatures as $name => $declaredFeature) {
             $featureRegistry->addMethodCall(
-                'register',
+                'registerFeature',
                 [$name, $declaredFeature['description'], $declaredFeature['strategy']]
             );
         }
