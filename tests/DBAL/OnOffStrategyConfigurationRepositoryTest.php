@@ -4,6 +4,9 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 
+/**
+ * @property OnOffStrategyConfigurationRepository $repository
+ */
 class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
     protected function createRepository(): void

@@ -4,6 +4,9 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 
+/**
+ * @property WhitelistStrategyConfigurationRepository $repository
+ */
 class WhitelistStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
     protected function createRepository(): void
