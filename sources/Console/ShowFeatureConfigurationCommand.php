@@ -67,6 +67,9 @@ class ShowFeatureConfigurationCommand extends Command
         return 0;
     }
 
+    /**
+     * @return \Generator<int, array{string, string, string}>
+     */
     private function generateRows(string $feature): \Generator
     {
         foreach ($this->toggleRouter->getFeatureConfiguration($feature) as $strategy => $configuration) {

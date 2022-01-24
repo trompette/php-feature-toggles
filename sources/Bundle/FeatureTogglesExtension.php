@@ -31,6 +31,9 @@ class FeatureTogglesExtension extends Extension
         $this->defineDoctrineEventSubscriber($container);
     }
 
+    /**
+     * @param array<string, array{description: string, strategy: string}> $declaredFeatures
+     */
     private function defineFeatureRegistry(array $declaredFeatures, ContainerBuilder $container): void
     {
         $featureRegistry = $container->register(FeatureRegistry::class, FeatureRegistry::class);

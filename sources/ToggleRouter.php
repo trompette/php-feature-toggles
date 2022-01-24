@@ -19,9 +19,14 @@ class ToggleRouter implements LoggerAwareInterface
 
     private FeatureRegistry $registry;
 
-    /** @var TogglingStrategy[] */
+    /**
+     * @var array<string, TogglingStrategy>
+     */
     private array $strategies;
 
+    /**
+     * @param array<string, TogglingStrategy> $strategies
+     */
     public function __construct(FeatureRegistry $registry, array $strategies = [])
     {
         Assert::thatAll($strategies)->isInstanceOf(TogglingStrategy::class);
@@ -64,6 +69,9 @@ class ToggleRouter implements LoggerAwareInterface
         }
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getFeatureConfiguration(string $feature): array
     {
         return array_map(

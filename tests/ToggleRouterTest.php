@@ -144,6 +144,9 @@ class ToggleRouterTest extends TestCase
         static::assertTrue($router->hasFeature('target', 'feature'));
     }
 
+    /**
+     * @param array<string, TogglingStrategy> $strategies
+     */
     private function configureToggleRouter(FeatureDefinition $definition = null, array $strategies = []): ToggleRouter
     {
         $registry = new FeatureRegistry();
@@ -155,6 +158,9 @@ class ToggleRouterTest extends TestCase
         return new ToggleRouter($registry, $strategies);
     }
 
+    /**
+     * @return array<string, TogglingStrategy>
+     */
     private function configureAllStrategies(): array
     {
         $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);

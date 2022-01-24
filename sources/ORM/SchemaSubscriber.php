@@ -9,7 +9,9 @@ use Trompette\FeatureToggles\DBAL\SchemaConfigurator;
 
 class SchemaSubscriber implements EventSubscriber
 {
-    /** @var SchemaConfigurator[] */
+    /**
+     * @var SchemaConfigurator[]
+     */
     private array $configurators;
 
     public function __construct(SchemaConfigurator ...$configurators)
