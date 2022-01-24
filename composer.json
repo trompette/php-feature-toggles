@@ -48,7 +48,8 @@
         "symfony/http-kernel": "To use the provided bundle"
     },
     "scripts": {
-        "test": "phpunit --colors=always --testdox tests/"
+        "test": "phpunit --colors=always --testdox tests/",
+        "stan": "phpstan analyse --level max sources/ tests/"
     },
     "config": {
         "allow-plugins": {
