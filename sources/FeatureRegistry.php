@@ -9,14 +9,18 @@ class FeatureRegistry
     /** @var FeatureDefinition[] */
     private array $definitions = [];
 
-    public function register(): void
+    public function register(FeatureDefinition $definition): void
     {
-        $definition = self::inferDefinition(func_get_args());
         $feature = $definition->getName();
 
         Assert::that($this->exists($feature))->false("$feature is already registered");
 
         $this->definitions[$feature] = $definition;
+    }
+
+    public function registerFeature(string $name, string $description, string $strategy): void
+    {
+        $this->register(new FeatureDefinition($name, $description, $strategy));
     }
 
     public function exists(string $feature): bool
@@ -29,18 +33,5 @@ class FeatureRegistry
         Assert::that($this->exists($feature))->true("$feature does not exist");
 
         return $this->definitions[$feature];
-    }
-
-    private static function inferDefinition(array $args): FeatureDefinition
-    {
-        switch (count($args)) {
-            case 1: $definition = $args[0]; break;
-            case 3: $definition = new FeatureDefinition(...$args); break;
-            default: throw new \ArgumentCountError("invalid register() call");
-        }
-
-        Assert::that($definition)->isInstanceOf(FeatureDefinition::class);
-
-        return $definition;
     }
 }

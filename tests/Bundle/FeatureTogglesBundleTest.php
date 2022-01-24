@@ -9,6 +9,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Trompette\FeatureToggles\Bundle\FeatureTogglesBundle;
+use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
+use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
+use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 use Trompette\FeatureToggles\ToggleRouter;
 
 class FeatureTogglesBundleTest extends TestCase
@@ -18,7 +21,19 @@ class FeatureTogglesBundleTest extends TestCase
         $kernel = new AppKernel('test', true);
         $kernel->boot();
 
-        static::assertTrue($kernel->getContainer()->has(ToggleRouter::class));
+        $DBALConnection = $kernel->getContainer()->get('my_doctrine_dbal_connection');
+        static::assertInstanceOf(Connection::class, $DBALConnection);
+
+        $onOffConfigurationRepository = new OnOffStrategyConfigurationRepository($DBALConnection);
+        $onOffConfigurationRepository->migrateSchema();
+        $whitelistConfigurationRepository = new WhitelistStrategyConfigurationRepository($DBALConnection);
+        $whitelistConfigurationRepository->migrateSchema();
+        $percentageConfigurationRepository = new PercentageStrategyConfigurationRepository($DBALConnection);
+        $percentageConfigurationRepository->migrateSchema();
+
+        $toggleRouter = $kernel->getContainer()->get(ToggleRouter::class);
+        static::assertInstanceOf(ToggleRouter::class, $toggleRouter);
+        static::assertIsArray($toggleRouter->getFeatureConfiguration('feature'));
     }
 }
 
@@ -36,6 +51,7 @@ class AppKernel extends Kernel
                 ->register('my_doctrine_dbal_connection', Connection::class)
                 ->setFactory([DriverManager::class, 'getConnection'])
                 ->setArguments([['url' => 'sqlite:///:memory:']])
+                ->setPublic(true)
             ;
 
             $container->loadFromExtension('feature_toggles', [
