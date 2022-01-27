@@ -50,9 +50,9 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->toggleRouter->configureFeature(
-            $feature = $input->getArgument('feature'),
-            $input->getArgument('strategy'),
-            $input->getArgument('method'),
+            $feature = (string) filter_var($input->getArgument('feature'), FILTER_SANITIZE_STRING),
+            (string) filter_var($input->getArgument('strategy'), FILTER_SANITIZE_STRING),
+            (string) filter_var($input->getArgument('method'), FILTER_SANITIZE_STRING),
             $input->getArgument('parameters')
         );
 

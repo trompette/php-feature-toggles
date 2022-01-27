@@ -39,6 +39,9 @@ class WhitelistTest extends TestCase
         static::assertFalse($whitelist->decideIfTargetHasFeature('not whitelisted', 'feature'));
     }
 
+    /**
+     * @param string[] $whitelistedTargets
+     */
     private function configureWhitelist(string $feature, array $whitelistedTargets): Whitelist
     {
         $configurationRepository = $this->prophesize(ConfigurationRepository::class);

@@ -6,7 +6,9 @@ use Assert\Assert;
 
 class FeatureRegistry
 {
-    /** @var FeatureDefinition[] */
+    /**
+     * @var array<string, FeatureDefinition>
+     */
     private array $definitions = [];
 
     public function register(FeatureDefinition $definition): void

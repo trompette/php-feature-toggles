@@ -4,6 +4,9 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 
+/**
+ * @property PercentageStrategyConfigurationRepository $repository
+ */
 class PercentageStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
 {
     protected function createRepository(): void

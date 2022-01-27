@@ -34,7 +34,13 @@
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "symfony/dependency-injection": ">=4.4",
-        "symfony/http-kernel": ">=4.4"
+        "symfony/http-kernel": ">=4.4",
+        "phpstan/phpstan": "^1.4",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-beberlei-assert": "^1.0",
+        "jangregor/phpstan-prophecy": "^1.0",
+        "phpstan/phpstan-symfony": "^1.1",
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "suggest": {
         "doctrine/orm": "To benefit from automatic schema creation",
@@ -42,6 +48,12 @@
         "symfony/http-kernel": "To use the provided bundle"
     },
     "scripts": {
-        "test": "phpunit --colors=always --testdox tests/"
+        "test": "phpunit --colors=always --testdox tests/",
+        "stan": "phpstan analyse --level max sources/ tests/"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }
