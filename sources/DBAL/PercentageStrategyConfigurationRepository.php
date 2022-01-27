@@ -14,7 +14,7 @@ class PercentageStrategyConfigurationRepository extends SchemaMigrator implement
         $sql = 'select percentage from feature_toggles_percentage where feature = ?';
         $column = $this->connection->fetchOne($sql, [$feature]);
 
-        return false !== $column ? $column : 0;
+        return false !== $column ? (int) filter_var($column, FILTER_SANITIZE_NUMBER_INT) : 0;
     }
 
     public function setPercentage(int $percentage, string $feature): void

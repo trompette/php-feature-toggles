@@ -13,7 +13,10 @@ class WhitelistStrategyConfigurationRepository extends SchemaMigrator implements
     {
         $sql = 'select target from feature_toggles_whitelist where feature = ?';
 
-        return $this->connection->executeQuery($sql, [$feature])->fetchFirstColumn();
+        return array_map(
+            fn ($column) => (string) filter_var($column, FILTER_SANITIZE_STRING),
+            $this->connection->executeQuery($sql, [$feature])->fetchFirstColumn()
+        );
     }
 
     public function addToWhitelist(string $target, string $feature): void

@@ -44,7 +44,8 @@ abstract class ConfigurationRepositoryTest extends TestCase
         $schema = $schemaManager->createSchema();
         static::assertCount(1, $tables = $schema->getTables());
 
-        $schemaManager->alterTable($this->createTableDiff(current($tables)));
+        $table = $schema->getTable((string) array_key_first($tables));
+        $schemaManager->alterTable($this->createTableDiff($table));
         static::assertNotEquals($schema, $schemaManager->createSchema());
 
         $this->repository->migrateSchema();

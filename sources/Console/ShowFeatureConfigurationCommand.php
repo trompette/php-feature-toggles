@@ -3,6 +3,7 @@
 namespace Trompette\FeatureToggles\Console;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,14 +34,17 @@ class ShowFeatureConfigurationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $feature = $input->getArgument('feature');
-        $target = $input->getArgument('target');
+        $feature = (string) filter_var($input->getArgument('feature'), FILTER_SANITIZE_STRING);
+        $target = (string) filter_var($input->getArgument('target'), FILTER_SANITIZE_STRING);
 
         $exists = $this->featureRegistry->exists($feature);
         $description = $exists ? $this->featureRegistry->getDefinition($feature)->getDescription() : '-';
         $strategy = $exists ? $this->featureRegistry->getDefinition($feature)->getStrategy() : '-';
 
-        $output->writeln($this->getHelper('formatter')->formatBlock('Feature', 'comment', true));
+        /** @var FormatterHelper $formatter */
+        $formatter = $this->getHelper('formatter');
+
+        $output->writeln($formatter->formatBlock('Feature', 'comment', true));
         $output->writeln([
             "Name:        " . $this->formatValue($feature),
             "Registered:  " . $this->formatValue($exists),
@@ -48,14 +52,14 @@ class ShowFeatureConfigurationCommand extends Command
             "Strategy:    " . $this->formatValue($strategy),
         ]);
 
-        $output->writeln($this->getHelper('formatter')->formatBlock('Configuration', 'comment', true));
+        $output->writeln($formatter->formatBlock('Configuration', 'comment', true));
         $table = new Table($output);
         $table->setHeaders(['Strategy', 'Parameter', 'Value']);
         $table->setRows(iterator_to_array($this->generateRows($feature)));
         $table->render();
 
-        if (null !== $target) {
-            $output->writeln($this->getHelper('formatter')->formatBlock('Target', 'comment', true));
+        if ('' !== $target) {
+            $output->writeln($formatter->formatBlock('Target', 'comment', true));
             $output->writeln(sprintf(
                 'Target %s %s feature %s.',
                 $this->formatValue($target),
@@ -79,6 +83,9 @@ class ShowFeatureConfigurationCommand extends Command
         }
     }
 
+    /**
+     * @param mixed $value
+     */
     private function formatValue($value): string
     {
         switch (true) {

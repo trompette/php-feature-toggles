@@ -80,6 +80,9 @@ class ToggleRouter implements LoggerAwareInterface
         );
     }
 
+    /**
+     * @param mixed $parameters
+     */
     public function configureFeature(string $feature, string $strategy, string $method, $parameters = []): void
     {
         Assert::that($this->strategies)->keyExists($strategy, "$strategy is an invalid strategy");
