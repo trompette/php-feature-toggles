@@ -17,14 +17,13 @@ jobs:
       matrix:
         dbal-version:
           - "2.13.*"
-          - "3.2.*"
+          - "3.3.*"
         php-version:
           - "7.4"
           - "8.0"
           - "8.1"
         symfony-version:
           - "4.4.*"
-          - "5.3.*"
           - "5.4.*"
           - "6.0.*"
         exclude:

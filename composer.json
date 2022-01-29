@@ -30,7 +30,7 @@
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "doctrine/orm": ">=2.10",
+        "doctrine/orm": ">=2.11",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "symfony/dependency-injection": ">=4.4",
