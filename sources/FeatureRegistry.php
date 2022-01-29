@@ -20,11 +20,6 @@ class FeatureRegistry
         $this->definitions[$feature] = $definition;
     }
 
-    public function registerFeature(string $name, string $description, string $strategy): void
-    {
-        $this->register(new FeatureDefinition($name, $description, $strategy));
-    }
-
     public function exists(string $feature): bool
     {
         return array_key_exists($feature, $this->definitions);
