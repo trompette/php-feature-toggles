@@ -11,6 +11,7 @@ use Trompette\FeatureToggles\Console\ShowFeatureConfigurationCommand;
 use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
+use Trompette\FeatureToggles\FeatureDefinition;
 use Trompette\FeatureToggles\FeatureRegistry;
 use Trompette\FeatureToggles\OnOffStrategy\OnOff;
 use Trompette\FeatureToggles\ORM\SchemaSubscriber;
@@ -38,11 +39,10 @@ class FeatureTogglesExtension extends Extension
     {
         $featureRegistry = $container->register(FeatureRegistry::class, FeatureRegistry::class);
 
-        foreach ($declaredFeatures as $name => $declaredFeature) {
-            $featureRegistry->addMethodCall(
-                'registerFeature',
-                [$name, $declaredFeature['description'], $declaredFeature['strategy']]
-            );
+        foreach ($declaredFeatures as $name => ['description' => $description, 'strategy' => $strategy]) {
+            $id = sprintf('declared_features.%s', $name);
+            $container->register($id, FeatureDefinition::class)->setArguments([$name, $description, $strategy]);
+            $featureRegistry->addMethodCall('register', [new Reference($id)]);
         }
     }
 
