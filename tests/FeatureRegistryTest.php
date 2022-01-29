@@ -13,10 +13,8 @@ class FeatureRegistryTest extends TestCase
     {
         $registry = new FeatureRegistry();
         $registry->register(new FeatureDefinition('feature', 'awesome feature', 'strategy'));
-        $registry->registerFeature('other feature', 'awesome other feature', 'strategy');
 
         static::assertTrue($registry->exists('feature'));
-        static::assertTrue($registry->exists('other feature'));
     }
 
     public function testFeatureCannotBeRegisteredTwice(): void

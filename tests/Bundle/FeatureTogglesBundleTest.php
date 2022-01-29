@@ -24,16 +24,16 @@ class FeatureTogglesBundleTest extends TestCase
         $DBALConnection = $kernel->getContainer()->get('my_doctrine_dbal_connection');
         static::assertInstanceOf(Connection::class, $DBALConnection);
 
-        $onOffConfigurationRepository = new OnOffStrategyConfigurationRepository($DBALConnection);
-        $onOffConfigurationRepository->migrateSchema();
-        $whitelistConfigurationRepository = new WhitelistStrategyConfigurationRepository($DBALConnection);
-        $whitelistConfigurationRepository->migrateSchema();
-        $percentageConfigurationRepository = new PercentageStrategyConfigurationRepository($DBALConnection);
-        $percentageConfigurationRepository->migrateSchema();
+        (new OnOffStrategyConfigurationRepository($DBALConnection))->migrateSchema();
+        (new WhitelistStrategyConfigurationRepository($DBALConnection))->migrateSchema();
+        (new PercentageStrategyConfigurationRepository($DBALConnection))->migrateSchema();
 
         $toggleRouter = $kernel->getContainer()->get(ToggleRouter::class);
         static::assertInstanceOf(ToggleRouter::class, $toggleRouter);
         static::assertIsArray($toggleRouter->getFeatureConfiguration('feature'));
+
+        $toggleRouter->configureFeature('feature', 'onoff', 'on');
+        static::assertTrue($toggleRouter->hasFeature('target', 'feature'));
     }
 }
 
