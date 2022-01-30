@@ -9,7 +9,7 @@ use Trompette\FeatureToggles\Console\ShowFeatureConfigurationCommand;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\FeatureDefinition;
 use Trompette\FeatureToggles\FeatureRegistry;
-use Trompette\FeatureToggles\ToggleRouter;
+use Trompette\FeatureToggles\ToggleRouterInterface;
 
 class ShowFeatureConfigurationCommandTest extends TestCase
 {
@@ -40,7 +40,7 @@ class ShowFeatureConfigurationCommandTest extends TestCase
         $featureRegistry = new FeatureRegistry();
         $featureRegistry->register(new FeatureDefinition('feature', 'awesome feature', 'dummy'));
 
-        $toggleRouter = $this->prophesize(ToggleRouter::class);
+        $toggleRouter = $this->prophesize(ToggleRouterInterface::class);
         $toggleRouter->getFeatureConfiguration('feature')->willReturn(['dummy' => ['paramKey' => 'paramValue']]);
         if ($withTarget) {
             $toggleRouter->hasFeature('target', 'feature')->willReturn(true);

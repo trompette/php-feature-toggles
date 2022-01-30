@@ -9,14 +9,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Trompette\FeatureToggles\FeatureRegistry;
-use Trompette\FeatureToggles\ToggleRouter;
+use Trompette\FeatureToggles\ToggleRouterInterface;
 
 class ShowFeatureConfigurationCommand extends Command
 {
     private FeatureRegistry $featureRegistry;
-    private ToggleRouter $toggleRouter;
+    private ToggleRouterInterface $toggleRouter;
 
-    public function __construct(FeatureRegistry $featureRegistry, ToggleRouter $toggleRouter)
+    public function __construct(FeatureRegistry $featureRegistry, ToggleRouterInterface $toggleRouter)
     {
         parent::__construct('feature-toggles:show-feature-configuration');
 

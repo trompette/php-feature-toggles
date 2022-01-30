@@ -6,7 +6,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use Trompette\FeatureToggles\Console\ConfigureFeatureCommand;
 use PHPUnit\Framework\TestCase;
-use Trompette\FeatureToggles\ToggleRouter;
+use Trompette\FeatureToggles\ToggleRouterInterface;
 
 class ConfigureFeatureCommandTest extends TestCase
 {
@@ -14,7 +14,7 @@ class ConfigureFeatureCommandTest extends TestCase
 
     public function testCommandCanBeExecutedWithoutExtraParameters(): void
     {
-        $toggleRouter = $this->prophesize(ToggleRouter::class);
+        $toggleRouter = $this->prophesize(ToggleRouterInterface::class);
         $toggleRouter->configureFeature('f', 's', 'm', [])->shouldBeCalled();
 
         $commandTester = new CommandTester(new ConfigureFeatureCommand($toggleRouter->reveal()));
@@ -30,7 +30,7 @@ class ConfigureFeatureCommandTest extends TestCase
 
     public function testCommandCanBeExecutedWithExtraParameters(): void
     {
-        $toggleRouter = $this->prophesize(ToggleRouter::class);
+        $toggleRouter = $this->prophesize(ToggleRouterInterface::class);
         $toggleRouter->configureFeature('f', 's', 'm', ['p1', 'p2'])->shouldBeCalled();
 
         $commandTester = new CommandTester(new ConfigureFeatureCommand($toggleRouter->reveal()));
