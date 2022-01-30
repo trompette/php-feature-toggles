@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 
-class MigrateDBALSchemaCommand extends Command
+final class MigrateDBALSchemaCommand extends Command
 {
     /**
      * @var SchemaMigrator[]

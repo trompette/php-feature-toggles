@@ -19,7 +19,7 @@ use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 use Trompette\FeatureToggles\ToggleRouter;
 use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
-class FeatureTogglesExtension extends Extension
+final class FeatureTogglesExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

@@ -4,7 +4,7 @@ namespace Trompette\FeatureToggles;
 
 use Assert\Assert;
 
-class FeatureRegistry
+final class FeatureRegistry
 {
     /**
      * @var array<string, FeatureDefinition>

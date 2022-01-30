@@ -4,7 +4,7 @@ namespace Trompette\FeatureToggles\OnOffStrategy;
 
 use Trompette\FeatureToggles\TogglingStrategy;
 
-class OnOff implements TogglingStrategy
+final class OnOff implements TogglingStrategy
 {
     private ConfigurationRepository $configurationRepository;
 

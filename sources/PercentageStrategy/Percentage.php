@@ -5,7 +5,7 @@ namespace Trompette\FeatureToggles\PercentageStrategy;
 use Assert\Assert;
 use Trompette\FeatureToggles\TogglingStrategy;
 
-class Percentage implements TogglingStrategy
+final class Percentage implements TogglingStrategy
 {
     private ConfigurationRepository $configurationRepository;
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\ORM\Tools\ToolEvents;
 use Trompette\FeatureToggles\DBAL\SchemaConfigurator;
 
-class SchemaSubscriber implements EventSubscriber
+final class SchemaSubscriber implements EventSubscriber
 {
     /**
      * @var SchemaConfigurator[]

@@ -13,7 +13,7 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 /**
  * @property LoggerInterface $logger
  */
-class ToggleRouter implements LoggerAwareInterface, ToggleRouterInterface
+final class ToggleRouter implements LoggerAwareInterface, ToggleRouterInterface
 {
     use LoggerAwareTrait;
 

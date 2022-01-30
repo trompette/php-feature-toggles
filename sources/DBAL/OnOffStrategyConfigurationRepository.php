@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Trompette\FeatureToggles\OnOffStrategy\ConfigurationRepository;
 
-class OnOffStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
+final class OnOffStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
 {
     public function isEnabled(string $feature): bool
     {
