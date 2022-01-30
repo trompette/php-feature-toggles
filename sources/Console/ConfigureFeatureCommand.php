@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Trompette\FeatureToggles\ToggleRouterInterface;
 
-class ConfigureFeatureCommand extends Command
+final class ConfigureFeatureCommand extends Command
 {
     private ToggleRouterInterface $toggleRouter;
 

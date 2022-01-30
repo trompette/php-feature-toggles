@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Trompette\FeatureToggles\FeatureRegistry;
 use Trompette\FeatureToggles\ToggleRouterInterface;
 
-class ShowFeatureConfigurationCommand extends Command
+final class ShowFeatureConfigurationCommand extends Command
 {
     private FeatureRegistry $featureRegistry;
     private ToggleRouterInterface $toggleRouter;

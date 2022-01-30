@@ -5,7 +5,7 @@ namespace Trompette\FeatureToggles\Bundle;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class FeatureTogglesConfiguration implements ConfigurationInterface
+final class FeatureTogglesConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {

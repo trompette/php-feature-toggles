@@ -7,7 +7,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Trompette\FeatureToggles\PercentageStrategy\ConfigurationRepository;
 
-class PercentageStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
+final class PercentageStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
 {
     public function getPercentage(string $feature): int
     {

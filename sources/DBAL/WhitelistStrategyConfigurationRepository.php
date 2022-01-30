@@ -7,7 +7,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Trompette\FeatureToggles\WhitelistStrategy\ConfigurationRepository;
 
-class WhitelistStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
+final class WhitelistStrategyConfigurationRepository extends SchemaMigrator implements ConfigurationRepository
 {
     public function getWhitelistedTargets(string $feature): array
     {

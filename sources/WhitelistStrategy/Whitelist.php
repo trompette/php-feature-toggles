@@ -4,7 +4,7 @@ namespace Trompette\FeatureToggles\WhitelistStrategy;
 
 use Trompette\FeatureToggles\TogglingStrategy;
 
-class Whitelist implements TogglingStrategy
+final class Whitelist implements TogglingStrategy
 {
     private ConfigurationRepository $configurationRepository;
 

@@ -2,7 +2,7 @@
 
 namespace Trompette\FeatureToggles;
 
-class FeatureDefinition
+final class FeatureDefinition
 {
     private string $name;
     private string $description;
