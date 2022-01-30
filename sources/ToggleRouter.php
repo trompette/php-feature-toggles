@@ -13,7 +13,7 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 /**
  * @property LoggerInterface $logger
  */
-class ToggleRouter implements LoggerAwareInterface
+class ToggleRouter implements LoggerAwareInterface, ToggleRouterInterface
 {
     use LoggerAwareTrait;
 
@@ -69,9 +69,6 @@ class ToggleRouter implements LoggerAwareInterface
         }
     }
 
-    /**
-     * @return array<string, array<string, mixed>>
-     */
     public function getFeatureConfiguration(string $feature): array
     {
         return array_map(
@@ -80,9 +77,6 @@ class ToggleRouter implements LoggerAwareInterface
         );
     }
 
-    /**
-     * @param mixed $parameters
-     */
     public function configureFeature(string $feature, string $strategy, string $method, $parameters = []): void
     {
         Assert::that($this->strategies)->keyExists($strategy, "$strategy is an invalid strategy");
