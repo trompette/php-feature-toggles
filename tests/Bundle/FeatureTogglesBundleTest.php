@@ -13,6 +13,7 @@ use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 use Trompette\FeatureToggles\ToggleRouter;
+use Trompette\FeatureToggles\ToggleRouterInterface;
 
 class FeatureTogglesBundleTest extends TestCase
 {
@@ -21,14 +22,18 @@ class FeatureTogglesBundleTest extends TestCase
         $kernel = new AppKernel('test', true);
         $kernel->boot();
 
-        $DBALConnection = $kernel->getContainer()->get('my_doctrine_dbal_connection');
+        $container = $kernel->getContainer();
+        static::assertTrue($container->has(ToggleRouter::class));
+        static::assertTrue($container->has(ToggleRouterInterface::class));
+
+        $DBALConnection = $container->get('my_doctrine_dbal_connection');
         static::assertInstanceOf(Connection::class, $DBALConnection);
 
         (new OnOffStrategyConfigurationRepository($DBALConnection))->migrateSchema();
         (new WhitelistStrategyConfigurationRepository($DBALConnection))->migrateSchema();
         (new PercentageStrategyConfigurationRepository($DBALConnection))->migrateSchema();
 
-        $toggleRouter = $kernel->getContainer()->get(ToggleRouter::class);
+        $toggleRouter = $container->get(ToggleRouter::class);
         static::assertInstanceOf(ToggleRouter::class, $toggleRouter);
         static::assertIsArray($toggleRouter->getFeatureConfiguration('feature'));
 

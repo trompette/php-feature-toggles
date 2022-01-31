@@ -175,7 +175,7 @@ class.
 
 There is only one service declared as public: the [toggle
 router](sources/ToggleRouter.php) with `Trompette\FeatureToggles\ToggleRouter`
-as identifier.
+or `Trompette\FeatureToggles\ToggleRouterInterface` as identifier.
 
 There are also useful console commands defined as services and tagged with
 `console.command`:

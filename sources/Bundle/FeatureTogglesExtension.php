@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\Bundle;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -17,6 +18,7 @@ use Trompette\FeatureToggles\OnOffStrategy\OnOff;
 use Trompette\FeatureToggles\ORM\SchemaSubscriber;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 use Trompette\FeatureToggles\ToggleRouter;
+use Trompette\FeatureToggles\ToggleRouterInterface;
 use Trompette\FeatureToggles\WhitelistStrategy\Whitelist;
 
 final class FeatureTogglesExtension extends Extension
@@ -88,6 +90,8 @@ final class FeatureTogglesExtension extends Extension
                 ->addTag('monolog.logger', ['channel' => 'feature_toggles'])
             ;
         }
+
+        $container->addAliases([ToggleRouterInterface::class => new Alias(ToggleRouter::class, true)]);
     }
 
     private function defineConsoleCommands(ContainerBuilder $container): void
