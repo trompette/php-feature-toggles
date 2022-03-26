@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\DBAL;
 
+use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
@@ -13,10 +14,11 @@ final class WhitelistStrategyConfigurationRepository extends SchemaMigrator impl
     {
         $sql = 'select target from feature_toggles_whitelist where feature = ?';
 
-        return array_map(
-            fn ($column) => (string) filter_var($column, FILTER_SANITIZE_STRING),
-            $this->connection->executeQuery($sql, [$feature])->fetchFirstColumn()
-        );
+        $targets = $this->connection->executeQuery($sql, [$feature])->fetchFirstColumn();
+
+        Assert::thatAll($targets)->string();
+
+        return $targets;
     }
 
     public function addToWhitelist(string $target, string $feature): void

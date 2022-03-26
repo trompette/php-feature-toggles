@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\Console;
 
+use Assert\Assert;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\Table;
@@ -34,15 +35,13 @@ final class ShowFeatureConfigurationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $feature = (string) filter_var($input->getArgument('feature'), FILTER_SANITIZE_STRING);
-        $target = (string) filter_var($input->getArgument('target'), FILTER_SANITIZE_STRING);
+        Assert::that($feature = $input->getArgument('feature'))->string();
+        Assert::thatNullOr($target = $input->getArgument('target'))->string();
+        Assert::that($formatter = $this->getHelper('formatter'))->isInstanceOf(FormatterHelper::class);
 
         $exists = $this->featureRegistry->exists($feature);
         $description = $exists ? $this->featureRegistry->getDefinition($feature)->getDescription() : '-';
         $strategy = $exists ? $this->featureRegistry->getDefinition($feature)->getStrategy() : '-';
-
-        /** @var FormatterHelper $formatter */
-        $formatter = $this->getHelper('formatter');
 
         $output->writeln($formatter->formatBlock('Feature', 'comment', true));
         $output->writeln([
@@ -58,7 +57,7 @@ final class ShowFeatureConfigurationCommand extends Command
         $table->setRows(iterator_to_array($this->generateRows($feature)));
         $table->render();
 
-        if ('' !== $target) {
+        if (null !== $target) {
             $output->writeln($formatter->formatBlock('Target', 'comment', true));
             $output->writeln(sprintf(
                 'Target %s %s feature %s.',

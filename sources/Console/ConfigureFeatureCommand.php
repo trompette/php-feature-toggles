@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\Console;
 
+use Assert\Assert;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,12 +50,11 @@ HELP
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->toggleRouter->configureFeature(
-            $feature = (string) filter_var($input->getArgument('feature'), FILTER_SANITIZE_STRING),
-            (string) filter_var($input->getArgument('strategy'), FILTER_SANITIZE_STRING),
-            (string) filter_var($input->getArgument('method'), FILTER_SANITIZE_STRING),
-            $input->getArgument('parameters')
-        );
+        Assert::that($feature = $input->getArgument('feature'))->string();
+        Assert::that($strategy = $input->getArgument('strategy'))->string();
+        Assert::that($method = $input->getArgument('method'))->string();
+
+        $this->toggleRouter->configureFeature($feature, $strategy, $method, $input->getArgument('parameters'));
 
         $output->writeln("Feature <info>$feature</info> configured!");
 
