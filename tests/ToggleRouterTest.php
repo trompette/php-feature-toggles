@@ -163,7 +163,7 @@ class ToggleRouterTest extends TestCase
      */
     private function configureAllStrategies(): array
     {
-        $DBALConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $DBALConnection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
 
         $onOffConfigurationRepository = new OnOffStrategyConfigurationRepository($DBALConnection);
         $onOffConfigurationRepository->migrateSchema();

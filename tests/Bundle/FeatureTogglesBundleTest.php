@@ -55,7 +55,7 @@ class AppKernel extends Kernel
             $container
                 ->register('my_doctrine_dbal_connection', Connection::class)
                 ->setFactory([DriverManager::class, 'getConnection'])
-                ->setArguments([['url' => 'sqlite:///:memory:']])
+                ->setArguments([['driver' => 'pdo_sqlite', 'memory' => true]])
                 ->setPublic(true)
             ;
 

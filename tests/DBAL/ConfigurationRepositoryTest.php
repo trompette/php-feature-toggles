@@ -20,7 +20,7 @@ abstract class ConfigurationRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $this->connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->createRepository();
     }
 
@@ -31,7 +31,7 @@ abstract class ConfigurationRepositoryTest extends TestCase
         $this->repository->configureSchema($schema = new Schema(), $this->connection);
         static::assertCount(1, $schema->getTables());
 
-        $anotherConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $anotherConnection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->repository->configureSchema($schema = new Schema(), $anotherConnection);
         static::assertEmpty($schema->getTables());
     }
