@@ -1,29 +1,46 @@
 name: "Static Analysis"
 
 on:
-    push:
-        branches:
-            - "master"
-    pull_request:
-        branches:
-            - "master"
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
 
 jobs:
   phpstan:
     name: "PHPStan"
     runs-on: "ubuntu-latest"
 
+    strategy:
+      matrix:
+        dbal-version:
+          - "3.8.*"
+#          - "4.0.*"
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        symfony-version:
+          - "5.4.*"
+          - "6.4.*"
+          - "7.0.*"
+        exclude:
+          - { php-version: "8.1", symfony-version: "7.0.*" }
+#          - { dbal-version: "4.0.*", symfony-version: "5.4.*" }
+
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
 
-      - name: "Install PHP"
+      - name: "Install PHP version from matrix"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.1"
+          php-version: "${{ matrix.php-version }}"
 
-      - name: "Install dependencies with Composer"
-        uses: "ramsey/composer-install@v1"
+      - name: "Require Doctrine DBAL and Symfony versions from matrix"
+        run: "composer require --ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-dist doctrine/dbal:${{ matrix.dbal-version }} symfony/symfony:${{ matrix.symfony-version }}"
 
       - name: "Run static analysis"
         run: "composer stan"

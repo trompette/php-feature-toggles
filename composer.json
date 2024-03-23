@@ -20,21 +20,21 @@
         }
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "beberlei/assert": ">=3.2",
-        "doctrine/dbal": ">=3.5",
+        "doctrine/dbal": "^3.8",
         "psr/log": ">=1.1",
-        "symfony/config": ">=4.4",
-        "symfony/console": ">=4.4",
-        "symfony/expression-language": ">=4.4"
+        "symfony/config": ">=5.4",
+        "symfony/console": ">=5.4",
+        "symfony/expression-language": ">=5.4"
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "doctrine/orm": ">=2.14",
+        "doctrine/orm": ">=2.19",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
-        "symfony/dependency-injection": ">=4.4",
-        "symfony/http-kernel": ">=4.4",
+        "symfony/dependency-injection": ">=5.4",
+        "symfony/http-kernel": ">=5.4",
         "phpstan/phpstan": "^1.9",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan-beberlei-assert": "^1.0",
