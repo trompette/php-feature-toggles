@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\Bundle;
 
+use Doctrine\ORM\Tools\ToolEvents;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -15,7 +16,7 @@ use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 use Trompette\FeatureToggles\FeatureDefinition;
 use Trompette\FeatureToggles\FeatureRegistry;
 use Trompette\FeatureToggles\OnOffStrategy\OnOff;
-use Trompette\FeatureToggles\ORM\SchemaSubscriber;
+use Trompette\FeatureToggles\ORM\SchemaConfigurationListener;
 use Trompette\FeatureToggles\PercentageStrategy\Percentage;
 use Trompette\FeatureToggles\ToggleRouter;
 use Trompette\FeatureToggles\ToggleRouterInterface;
@@ -31,7 +32,7 @@ final class FeatureTogglesExtension extends Extension
         $this->defineTogglingStrategies($config['doctrine_dbal_connection'], $container);
         $this->defineToggleRouter($container);
         $this->defineConsoleCommands($container);
-        $this->defineDoctrineEventSubscriber($container);
+        $this->defineDoctrineEventListener($container);
     }
 
     /**
@@ -118,14 +119,16 @@ final class FeatureTogglesExtension extends Extension
         ;
     }
 
-    private function defineDoctrineEventSubscriber(ContainerBuilder $container): void
+    private function defineDoctrineEventListener(ContainerBuilder $container): void
     {
-        $container
-            ->register(SchemaSubscriber::class, SchemaSubscriber::class)
-            ->addArgument(new Reference(OnOffStrategyConfigurationRepository::class))
-            ->addArgument(new Reference(WhitelistStrategyConfigurationRepository::class))
-            ->addArgument(new Reference(PercentageStrategyConfigurationRepository::class))
-            ->addTag('doctrine.event_subscriber')
-        ;
+        if (class_exists(ToolEvents::class)) {
+            $container
+                ->register(SchemaConfigurationListener::class, SchemaConfigurationListener::class)
+                ->addArgument(new Reference(OnOffStrategyConfigurationRepository::class))
+                ->addArgument(new Reference(WhitelistStrategyConfigurationRepository::class))
+                ->addArgument(new Reference(PercentageStrategyConfigurationRepository::class))
+                ->addTag('doctrine.event_listener', ['event' => ToolEvents::postGenerateSchema])
+            ;
+        }
     }
 }
