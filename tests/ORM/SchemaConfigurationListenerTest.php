@@ -2,6 +2,7 @@
 
 namespace Test\Trompette\FeatureToggles\ORM;
 
+use Doctrine\Common\EventManager;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,9 +11,9 @@ use Doctrine\ORM\Tools\ToolEvents;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Trompette\FeatureToggles\DBAL\SchemaConfigurator;
-use Trompette\FeatureToggles\ORM\SchemaSubscriber;
+use Trompette\FeatureToggles\ORM\SchemaConfigurationListener;
 
-class SchemaSubscriberTest extends TestCase
+class SchemaConfigurationListenerTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -21,15 +22,18 @@ class SchemaSubscriberTest extends TestCase
         $schema = new Schema();
         $connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
 
-        $configurator = $this->prophesize(SchemaConfigurator::class);
-        $configurator->configureSchema($schema, $connection)->shouldBeCalled();
-
-        $connection->getEventManager()->addEventSubscriber(new SchemaSubscriber($configurator->reveal()));
-
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->getConnection()->willReturn($connection);
 
-        $connection->getEventManager()->dispatchEvent(
+        $configurator = $this->prophesize(SchemaConfigurator::class);
+        $configurator->configureSchema($schema, $connection)->shouldBeCalled();
+
+        $eventManager = new EventManager();
+        $eventManager->addEventListener(
+            ToolEvents::postGenerateSchema,
+            new SchemaConfigurationListener($configurator->reveal())
+        );
+        $eventManager->dispatchEvent(
             ToolEvents::postGenerateSchema,
             new GenerateSchemaEventArgs($entityManager->reveal(), $schema)
         );

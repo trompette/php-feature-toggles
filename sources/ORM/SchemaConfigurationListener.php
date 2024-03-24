@@ -2,12 +2,10 @@
 
 namespace Trompette\FeatureToggles\ORM;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
-use Doctrine\ORM\Tools\ToolEvents;
 use Trompette\FeatureToggles\DBAL\SchemaConfigurator;
 
-final class SchemaSubscriber implements EventSubscriber
+final class SchemaConfigurationListener
 {
     /**
      * @var SchemaConfigurator[]
@@ -27,11 +25,5 @@ final class SchemaSubscriber implements EventSubscriber
         foreach ($this->configurators as $configurator) {
             $configurator->configureSchema($schema, $connection);
         }
-    }
-
-    public function getSubscribedEvents(): array
-    {
-        // subscribe to event only if Doctrine ORM is installed
-        return class_exists(ToolEvents::class) ? [ToolEvents::postGenerateSchema] : [];
     }
 }
