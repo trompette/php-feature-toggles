@@ -4,11 +4,7 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\DBAL\SchemaMigrator;
@@ -39,25 +35,21 @@ abstract class ConfigurationRepositoryTest extends TestCase
     public function testAlteredSchemaCanBeMigrated(): void
     {
         $schemaManager = $this->connection->createSchemaManager();
+        $comparator = $schemaManager->createComparator();
 
         $this->repository->migrateSchema();
-        $schema = $schemaManager->introspectSchema();
-        static::assertCount(1, $tables = $schema->getTables());
+        $expectedSchema = $schemaManager->introspectSchema();
+        $expectedTables = $expectedSchema->getTables();
+        static::assertNotEmpty($expectedTables);
 
-        $table = $schema->getTable((string) array_key_first($tables));
-        $schemaManager->alterTable($this->createTableDiff($table));
-        static::assertNotEquals($schema, $schemaManager->introspectSchema());
+        $fromTable = reset($expectedTables);
+        $toTable = clone $fromTable;
+        $toTable->addColumn(uniqid('c_'), Types::INTEGER, ['default' => 0]);
+        $tableDiff = $comparator->compareTables($fromTable, $toTable);
+        $schemaManager->alterTable($tableDiff);
+        static::assertNotEquals($expectedSchema, $schemaManager->introspectSchema());
 
         $this->repository->migrateSchema();
-        static::assertEquals($schema, $schemaManager->introspectSchema());
-    }
-
-    private function createTableDiff(Table $table): TableDiff
-    {
-        $tableDiff = new TableDiff($table->getName());
-        $tableDiff->addedColumns[] = new Column(uniqid('c_'), Type::getType(Types::INTEGER), ['default' => 0]);
-        $tableDiff->fromTable = $table;
-
-        return $tableDiff;
+        static::assertEquals($expectedSchema, $schemaManager->introspectSchema());
     }
 }
