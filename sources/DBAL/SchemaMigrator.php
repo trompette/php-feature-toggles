@@ -16,7 +16,7 @@ abstract class SchemaMigrator implements SchemaConfigurator
     public function migrateSchema(): void
     {
         $platform = $this->connection->getDatabasePlatform();
-        $fromSchema = $this->connection->createSchemaManager()->createSchema();
+        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
 
         $this->configureSchema($toSchema = clone $fromSchema, $this->connection);
 

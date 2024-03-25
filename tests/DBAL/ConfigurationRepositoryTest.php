@@ -41,15 +41,15 @@ abstract class ConfigurationRepositoryTest extends TestCase
         $schemaManager = $this->connection->createSchemaManager();
 
         $this->repository->migrateSchema();
-        $schema = $schemaManager->createSchema();
+        $schema = $schemaManager->introspectSchema();
         static::assertCount(1, $tables = $schema->getTables());
 
         $table = $schema->getTable((string) array_key_first($tables));
         $schemaManager->alterTable($this->createTableDiff($table));
-        static::assertNotEquals($schema, $schemaManager->createSchema());
+        static::assertNotEquals($schema, $schemaManager->introspectSchema());
 
         $this->repository->migrateSchema();
-        static::assertEquals($schema, $schemaManager->createSchema());
+        static::assertEquals($schema, $schemaManager->introspectSchema());
     }
 
     private function createTableDiff(Table $table): TableDiff
