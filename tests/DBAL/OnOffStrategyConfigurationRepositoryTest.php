@@ -7,7 +7,7 @@ use Trompette\FeatureToggles\DBAL\OnOffStrategyConfigurationRepository;
 /**
  * @property OnOffStrategyConfigurationRepository $repository
  */
-class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
+class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTestCase
 {
     protected function createRepository(): void
     {

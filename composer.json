@@ -31,7 +31,7 @@
     "require-dev": {
         "ext-sqlite3": "*",
         "doctrine/orm": ">=2.19",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "symfony/dependency-injection": ">=5.4",
         "symfony/http-kernel": ">=5.4",

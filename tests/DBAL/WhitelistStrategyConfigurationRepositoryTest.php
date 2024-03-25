@@ -7,7 +7,7 @@ use Trompette\FeatureToggles\DBAL\WhitelistStrategyConfigurationRepository;
 /**
  * @property WhitelistStrategyConfigurationRepository $repository
  */
-class WhitelistStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
+class WhitelistStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTestCase
 {
     protected function createRepository(): void
     {

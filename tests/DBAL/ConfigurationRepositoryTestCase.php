@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\DBAL\SchemaMigrator;
 
-abstract class ConfigurationRepositoryTest extends TestCase
+abstract class ConfigurationRepositoryTestCase extends TestCase
 {
     protected Connection $connection;
     protected SchemaMigrator $repository;
