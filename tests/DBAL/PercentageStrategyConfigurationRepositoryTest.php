@@ -7,7 +7,7 @@ use Trompette\FeatureToggles\DBAL\PercentageStrategyConfigurationRepository;
 /**
  * @property PercentageStrategyConfigurationRepository $repository
  */
-class PercentageStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTest
+class PercentageStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTestCase
 {
     protected function createRepository(): void
     {
