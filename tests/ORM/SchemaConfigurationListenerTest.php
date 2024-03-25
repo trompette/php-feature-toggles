@@ -20,7 +20,7 @@ class SchemaConfigurationListenerTest extends TestCase
     public function testSchemaIsConfiguredAfterGeneration(): void
     {
         $schema = new Schema();
-        $connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
 
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->getConnection()->willReturn($connection);

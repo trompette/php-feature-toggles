@@ -4,11 +4,7 @@ namespace Test\Trompette\FeatureToggles\DBAL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\TestCase;
 use Trompette\FeatureToggles\DBAL\SchemaMigrator;
@@ -20,7 +16,7 @@ abstract class ConfigurationRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->connection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $this->connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->createRepository();
     }
 
@@ -31,33 +27,29 @@ abstract class ConfigurationRepositoryTest extends TestCase
         $this->repository->configureSchema($schema = new Schema(), $this->connection);
         static::assertCount(1, $schema->getTables());
 
-        $anotherConnection = DriverManager::getConnection(['url' => 'sqlite:///:memory:']);
+        $anotherConnection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->repository->configureSchema($schema = new Schema(), $anotherConnection);
         static::assertEmpty($schema->getTables());
     }
 
     public function testAlteredSchemaCanBeMigrated(): void
     {
-        $schemaManager = $this->connection->getSchemaManager();
+        $schemaManager = $this->connection->createSchemaManager();
+        $comparator = $schemaManager->createComparator();
 
         $this->repository->migrateSchema();
-        $schema = $schemaManager->createSchema();
-        static::assertCount(1, $tables = $schema->getTables());
+        $expectedSchema = $schemaManager->introspectSchema();
+        $expectedTables = $expectedSchema->getTables();
+        static::assertNotEmpty($expectedTables);
 
-        $table = $schema->getTable((string) array_key_first($tables));
-        $schemaManager->alterTable($this->createTableDiff($table));
-        static::assertNotEquals($schema, $schemaManager->createSchema());
+        $fromTable = reset($expectedTables);
+        $toTable = clone $fromTable;
+        $toTable->addColumn(uniqid('c_'), Types::INTEGER, ['default' => 0]);
+        $tableDiff = $comparator->compareTables($fromTable, $toTable);
+        $schemaManager->alterTable($tableDiff);
+        static::assertNotEquals($expectedSchema, $schemaManager->introspectSchema());
 
         $this->repository->migrateSchema();
-        static::assertEquals($schema, $schemaManager->createSchema());
-    }
-
-    private function createTableDiff(Table $table): TableDiff
-    {
-        $tableDiff = new TableDiff($table->getName());
-        $tableDiff->addedColumns[] = new Column(uniqid('c_'), Type::getType(Types::INTEGER), ['default' => 0]);
-        $tableDiff->fromTable = $table;
-
-        return $tableDiff;
+        static::assertEquals($expectedSchema, $schemaManager->introspectSchema());
     }
 }
