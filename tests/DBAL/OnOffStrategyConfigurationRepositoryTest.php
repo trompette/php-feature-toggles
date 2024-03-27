@@ -25,4 +25,17 @@ class OnOffStrategyConfigurationRepositoryTest extends ConfigurationRepositoryTe
         $this->repository->setEnabled(false, 'feature');
         static::assertFalse($this->repository->isEnabled('feature'));
     }
+
+    public function testListAndRemoveFeatures(): void
+    {
+        $this->repository->migrateSchema();
+        static::assertEmpty($this->repository->listFeatures());
+
+        $this->repository->setEnabled(true, 'feature_1');
+        $this->repository->setEnabled(false, 'feature_2');
+        static::assertSame(['feature_1', 'feature_2'], $this->repository->listFeatures());
+
+        $this->repository->removeFeature('feature_1');
+        static::assertSame(['feature_2'], $this->repository->listFeatures());
+    }
 }

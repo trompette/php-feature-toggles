@@ -97,4 +97,28 @@ final class ToggleRouter implements LoggerAwareInterface, ToggleRouterInterface
             'parameters' => $parameters,
         ]);
     }
+
+    public function listUnregisteredFeatures(): array
+    {
+        $configuredFeatures = array_unique(array_reduce(
+            $this->strategies,
+            fn (array $features, TogglingStrategy $strategy) => \array_merge($features, $strategy->listFeatures()),
+            []
+        ));
+
+        $registeredFeatures = array_keys($this->registry->getDefinitions());
+
+        $unregisteredFeatures = array_values(array_diff($configuredFeatures, $registeredFeatures));
+
+        sort($unregisteredFeatures);
+
+        return $unregisteredFeatures;
+    }
+
+    public function clearFeatureConfiguration(string $feature): void
+    {
+        foreach ($this->strategies as $strategy) {
+            $strategy->clearFeatureConfiguration($feature);
+        }
+    }
 }
