@@ -12,4 +12,11 @@ interface ConfigurationRepository
     public function addToWhitelist(string $target, string $feature): void;
 
     public function removeFromWhitelist(string $target, string $feature): void;
+
+    /**
+     * @return string[]
+     */
+    public function listFeatures(): array;
+
+    public function removeFeature(string $feature): void;
 }
