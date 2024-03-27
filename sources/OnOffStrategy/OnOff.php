@@ -32,4 +32,14 @@ final class OnOff implements TogglingStrategy
     {
         $this->configurationRepository->setEnabled(false, $feature);
     }
+
+    public function listFeatures(): array
+    {
+        return $this->configurationRepository->listFeatures();
+    }
+
+    public function clearFeatureConfiguration(string $feature): void
+    {
+        $this->configurationRepository->removeFeature($feature);
+    }
 }
