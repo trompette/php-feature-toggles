@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v4"
 
       - name: "Install PHP version from matrix"
         uses: "shivammathur/setup-php@v2"
