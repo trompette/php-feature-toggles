@@ -21,6 +21,27 @@ final class WhitelistStrategyConfigurationRepository extends SchemaMigrator impl
         return $targets;
     }
 
+    public function listFeatures(): array
+    {
+        $sql = 'select distinct feature from feature_toggles_whitelist';
+
+        $features = $this->connection->fetchFirstColumn($sql);
+
+        Assert::thatAll($features)->string();
+
+        return $features;
+    }
+
+    public function removefeature(string $feature): void
+    {
+        $this->connection->delete(
+            'feature_toggles_whitelist',
+            [
+                'feature' => $feature,
+            ]
+        );
+    }
+
     public function addToWhitelist(string $target, string $feature): void
     {
         $this->connection->insert('feature_toggles_whitelist', [

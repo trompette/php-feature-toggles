@@ -34,4 +34,14 @@ final class Whitelist implements TogglingStrategy
     {
         $this->configurationRepository->removeFromWhitelist($target, $feature);
     }
+
+    public function listFeatures(): array
+    {
+        return $this->configurationRepository->listFeatures();
+    }
+
+    public function clearFeatureConfiguration(string $feature): void
+    {
+        $this->configurationRepository->removeFeature($feature);
+    }
 }

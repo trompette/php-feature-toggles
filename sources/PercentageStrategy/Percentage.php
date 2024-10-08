@@ -41,6 +41,16 @@ final class Percentage implements TogglingStrategy
         $this->configurationRepository->setPercentage($percentage, $feature);
     }
 
+    public function listFeatures(): array
+    {
+        return $this->configurationRepository->listFeatures();
+    }
+
+    public function clearFeatureConfiguration(string $feature): void
+    {
+        $this->configurationRepository->removeFeature($feature);
+    }
+
     private function computeHash(string $raw, string $salt): int
     {
         return hexdec(substr(md5($raw . $salt), 0, 8)) % 100;

@@ -144,6 +144,49 @@ class ToggleRouterTest extends TestCase
         static::assertTrue($router->hasFeature('target', 'feature'));
     }
 
+    public function testListUnregisteredFeatures(): void
+    {
+        $router = $this->configureToggleRouter(
+            new FeatureDefinition('feature', 'awesome feature', 'onoff or whitelist or percentage'),
+            $this->configureAllStrategies()
+        );
+
+        $router->configureFeature('feature', 'whitelist', 'allow', 'target');
+        $router->configureFeature('unregistered', 'whitelist', 'allow', 'target');
+        $router->configureFeature('unregistered', 'percentage', 'slide', '50');
+
+        static::assertSame(['unregistered'], $router->listUnregisteredFeatures());
+    }
+
+    public function testConfigurationCanBeClearedForRegisteredFeatures(): void
+    {
+        $router = $this->configureToggleRouter(
+            new FeatureDefinition('feature', 'awesome feature', 'onoff or whitelist or percentage'),
+            $this->configureAllStrategies()
+        );
+
+        $router->configureFeature('feature', 'whitelist', 'allow', 'target');
+
+        static::assertTrue($router->hasFeature('target', 'feature'));
+
+        $router->clearFeatureConfiguration('feature');
+
+        static::assertFalse($router->hasFeature('target', 'feature'));
+    }
+
+    public function testConfigurationCanBeClearedForUnregisteredFeatures(): void
+    {
+        $router = $this->configureToggleRouter(null, $this->configureAllStrategies());
+
+        $router->configureFeature('feature', 'whitelist', 'allow', 'target');
+
+        static::assertSame(['feature'], $router->listUnregisteredFeatures());
+
+        $router->clearFeatureConfiguration('feature');
+
+        static::assertEmpty($router->listUnregisteredFeatures());
+    }
+
     /**
      * @param array<string, TogglingStrategy> $strategies
      */

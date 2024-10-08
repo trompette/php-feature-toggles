@@ -15,4 +15,11 @@ interface ToggleRouterInterface
      * @param mixed $parameters
      */
     public function configureFeature(string $feature, string $strategy, string $method, $parameters = []): void;
+
+    /**
+     * @return string[]
+     */
+    public function listUnregisteredFeatures(): array;
+
+    public function clearFeatureConfiguration(string $feature): void;
 }

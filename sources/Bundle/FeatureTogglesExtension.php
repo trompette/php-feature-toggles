@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Trompette\FeatureToggles\Console\ClearUnregisteredFeaturesCommand;
 use Trompette\FeatureToggles\Console\ConfigureFeatureCommand;
 use Trompette\FeatureToggles\Console\MigrateDBALSchemaCommand;
 use Trompette\FeatureToggles\Console\ShowFeatureConfigurationCommand;
@@ -114,6 +115,12 @@ final class FeatureTogglesExtension extends Extension
 
         $container
             ->register(ConfigureFeatureCommand::class, ConfigureFeatureCommand::class)
+            ->addArgument(new Reference(ToggleRouter::class))
+            ->addTag('console.command')
+        ;
+
+        $container
+            ->register(ClearUnregisteredFeaturesCommand::class, ClearUnregisteredFeaturesCommand::class)
             ->addArgument(new Reference(ToggleRouter::class))
             ->addTag('console.command')
         ;

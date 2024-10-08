@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\DBAL;
 
+use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
@@ -15,6 +16,27 @@ final class OnOffStrategyConfigurationRepository extends SchemaMigrator implemen
         $sql = 'select enabled from feature_toggles_onoff where feature = ?';
 
         return (bool) $this->connection->fetchOne($sql, [$feature]);
+    }
+
+    public function listFeatures(): array
+    {
+        $sql = 'select distinct feature from feature_toggles_onoff';
+
+        $features = $this->connection->fetchFirstColumn($sql);
+
+        Assert::thatAll($features)->string();
+
+        return $features;
+    }
+
+    public function removefeature(string $feature): void
+    {
+        $this->connection->delete(
+            'feature_toggles_onoff',
+            [
+                'feature' => $feature,
+            ]
+        );
     }
 
     public function setEnabled(bool $enabled, string $feature): void

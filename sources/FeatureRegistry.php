@@ -31,4 +31,12 @@ final class FeatureRegistry
 
         return $this->definitions[$feature];
     }
+
+    /**
+     * @return array<string, FeatureDefinition>
+     */
+    public function getDefinitions(): array
+    {
+        return $this->definitions;
+    }
 }
