@@ -2,6 +2,7 @@
 
 namespace Trompette\FeatureToggles\DBAL;
 
+use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
@@ -15,6 +16,27 @@ final class PercentageStrategyConfigurationRepository extends SchemaMigrator imp
         $column = $this->connection->fetchOne($sql, [$feature]);
 
         return false !== $column ? (int) filter_var($column, FILTER_SANITIZE_NUMBER_INT) : 0;
+    }
+
+    public function listFeatures(): array
+    {
+        $sql = 'select distinct feature from feature_toggles_percentage';
+
+        $features = $this->connection->fetchFirstColumn($sql);
+
+        Assert::thatAll($features)->string();
+
+        return $features;
+    }
+
+    public function removefeature(string $feature): void
+    {
+        $this->connection->delete(
+            'feature_toggles_percentage',
+            [
+                'feature' => $feature,
+            ]
+        );
     }
 
     public function setPercentage(int $percentage, string $feature): void
