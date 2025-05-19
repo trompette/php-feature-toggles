@@ -147,7 +147,7 @@ class ToggleRouterTest extends TestCase
     /**
      * @param array<string, TogglingStrategy> $strategies
      */
-    private function configureToggleRouter(FeatureDefinition $definition = null, array $strategies = []): ToggleRouter
+    private function configureToggleRouter(?FeatureDefinition $definition = null, array $strategies = []): ToggleRouter
     {
         $registry = new FeatureRegistry();
 
